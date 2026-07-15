@@ -22,21 +22,27 @@ print(f"Current Price: ${current_price}")
 print(f"Shares Outstanding: {shares_outstanding}")
 print(f"Market Cap: ${market_cap}")
 
-# --- DCF PROJECTION ---
+# --- DCF PROJECTION (revised to reflect AI-driven memory supercycle) ---
 latest_revenue = revenue.iloc[0]
-revenue_growth_rate = 0.10
-normalized_fcf_margin = 0.065
-discount_rate = 0.10
-terminal_growth_rate = 0.03
+
+# Assumptions calibrated to Street consensus (UBS, BofA, Citi lower bound)
+# Reflects DRAM pricing surge, HBM demand, and constrained supply through 2027
+discount_rate = 0.09
+terminal_growth_rate = 0.04
 projection_years = 5
+
+# Tapering growth: aggressive near-term (supply-constrained pricing), 
+# normalizing as new capacity comes online post-2027
+growth_rates = [0.35, 0.35, 0.25, 0.20, 0.15]
+fcf_margins = [0.18, 0.20, 0.20, 0.18, 0.17]  # margin expansion then slight normalization
 
 projected_revenue = []
 projected_fcf = []
 rev = latest_revenue
 
-for year in range(1, projection_years + 1):
-    rev = rev * (1 + revenue_growth_rate)
-    fcf_year = rev * normalized_fcf_margin
+for year in range(projection_years):
+    rev = rev * (1 + growth_rates[year])
+    fcf_year = rev * fcf_margins[year]
     projected_revenue.append(rev)
     projected_fcf.append(fcf_year)
 
