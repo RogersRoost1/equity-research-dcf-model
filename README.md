@@ -5,6 +5,6 @@ DCF valuation model for Micron Technology (MU) built in Python - pulls financial
 ## Sample Output
 
 === FINAL RESULT ===
-Fair Value Per Share: $37.42
+Fair Value Per Share: $286.33
 Current Market Price: $983.12
 Verdict: Potentially OVERVALUED based on this model
