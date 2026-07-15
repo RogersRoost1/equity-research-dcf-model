@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tech Valuation Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.32.0/plotly.min.js"></script>
+<style>
+  body { font-family: -apple-system, Segoe UI, Roboto, sans-serif; background:#0f1117; color:#e8e8e8; margin:0; padding:24px; }
+  h1 { font-size: 20px; margin-bottom:4px; }
+  .subtitle { color:#9aa0a6; font-size:13px; margin-bottom:20px; }
+  .tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+  .tab-btn { background:#1b1e27; border:1px solid #2c303c; color:#cfd2da; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:14px; }
+  .tab-btn.active { background:#2E86AB; color:white; border-color:#2E86AB; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .card { background:#161922; border:1px solid #2c303c; border-radius:12px; padding:20px; margin-bottom:16px; }
+  .stat-row { display:flex; gap:24px; flex-wrap:wrap; margin-top:12px; }
+  .stat { min-width:140px; }
+  .stat-label { font-size:12px; color:#9aa0a6; text-transform:uppercase; letter-spacing:0.5px;}
+  .stat-value { font-size:20px; font-weight:600; }
+  .verdict-under { color:#3ddc97; }
+  .verdict-over { color:#ff6b6b; }
+  .assumptions { font-size:13px; color:#9aa0a6; margin-top:16px; line-height:1.6; }
+  table.summary { width:100%; border-collapse: collapse; font-size:13px; }
+  table.summary th, table.summary td { text-align:left; padding:8px 10px; border-bottom:1px solid #2c303c; }
+  table.summary th { color:#9aa0a6; font-weight:500; }
+</style>
+</head>
+<body>
+<h1>Tech Valuation Dashboard</h1>
+<div class="subtitle">Generated July 15, 2026 06:48 PM &middot; DCF assumptions anchored to Yahoo Finance consensus analyst estimates &middot; Not investment advice</div>
+
+<div class="tabs" id="tabs"></div>
+<div id="panels"></div>
+
+<script>
+const results = [{"symbol": "MU", "company_name": "Micron Technology, Inc.", "current_price": 904.28, "shares_outstanding": 1129393151, "market_cap": 1021287661568, "dcf_fair_value": -92.74, "street_mean_target": 1486.0, "street_median_target": 1550.0, "street_low_target": 361.0, "street_high_target": 2200.0, "blended_fair_value": 696.63, "verdict": "OVERVALUED", "assumptions": {"discount_rate": 0.13, "beta": 2.14, "terminal_growth_rate": 0.04, "fcf_margin": -0.0607, "growth_path": [0.6, 0.6, 0.4333, 0.2667, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-15 18:48"}, {"symbol": "AVGO", "company_name": "Broadcom Inc.", "current_price": 394.28, "shares_outstanding": 4757580198, "market_cap": 1875818708992, "dcf_fair_value": 303.17, "street_mean_target": 523.73, "street_median_target": 525.0, "street_low_target": 215.88, "street_high_target": 650.0, "blended_fair_value": 413.45, "verdict": "UNDERVALUED", "assumptions": {"discount_rate": 0.1161, "beta": 1.46, "terminal_growth_rate": 0.04, "fcf_margin": 0.4453, "growth_path": [0.6, 0.6, 0.4333, 0.2667, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-15 18:48"}, {"symbol": "GOOGL", "company_name": "Alphabet Inc.", "current_price": 370.92, "shares_outstanding": 5867155790, "market_cap": 4526178304000, "dcf_fair_value": 369.03, "street_mean_target": 431.72, "street_median_target": 430.0, "street_low_target": 340.0, "street_high_target": 515.0, "blended_fair_value": 400.38, "verdict": "UNDERVALUED", "assumptions": {"discount_rate": 0.1053, "beta": 1.25, "terminal_growth_rate": 0.04, "fcf_margin": 0.207, "growth_path": [0.2126, 0.1947, 0.1631, 0.1316, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-15 18:48"}, {"symbol": "MRVL", "company_name": "Marvell Technology, Inc.", "current_price": 206.26, "shares_outstanding": 875766423, "market_cap": 185127518208, "dcf_fair_value": 54.77, "street_mean_target": 252.56, "street_median_target": 242.5, "street_low_target": 110.0, "street_high_target": 385.0, "blended_fair_value": 153.67, "verdict": "OVERVALUED", "assumptions": {"discount_rate": 0.13, "beta": 2.2, "terminal_growth_rate": 0.04, "fcf_margin": 0.1943, "growth_path": [0.4071, 0.448, 0.332, 0.216, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-15 18:48"}, {"symbol": "AMZN", "company_name": "Amazon.com, Inc.", "current_price": 254.96, "shares_outstanding": 10757109436, "market_cap": 2742632841216, "dcf_fair_value": 21.17, "street_mean_target": 314.27, "street_median_target": 315.0, "street_low_target": 207.0, "street_high_target": 370.0, "blended_fair_value": 167.72, "verdict": "OVERVALUED", "assumptions": {"discount_rate": 0.1161, "beta": 1.46, "terminal_growth_rate": 0.04, "fcf_margin": 0.0214, "growth_path": [0.148, 0.1299, 0.1199, 0.11, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-15 18:48"}, {"symbol": "SNDK", "company_name": "Sandisk Corporation", "current_price": 1615.0, "shares_outstanding": 148089758, "market_cap": 239164964864, "dcf_fair_value": -259.89, "street_mean_target": 2112.32, "street_median_target": 2250.0, "street_low_target": 1000.0, "street_high_target": 3250.0, "blended_fair_value": 926.21, "verdict": "OVERVALUED", "assumptions": {"discount_rate": 0.103, "beta": 1.2, "terminal_growth_rate": 0.04, "fcf_margin": -0.0802, "growth_path": [0.6, 0.6, 0.4333, 0.2667, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-15 18:48"}];
+
+const tabsEl = document.getElementById('tabs');
+const panelsEl = document.getElementById('panels');
+
+// Summary tab button
+const summaryBtn = document.createElement('div');
+summaryBtn.className = 'tab-btn active';
+summaryBtn.textContent = 'Summary';
+summaryBtn.onclick = () => showPanel('summary');
+tabsEl.appendChild(summaryBtn);
+
+results.forEach(r => {
+  const btn = document.createElement('div');
+  btn.className = 'tab-btn';
+  btn.textContent = r.symbol;
+  btn.onclick = () => showPanel(r.symbol);
+  tabsEl.appendChild(btn);
+});
+
+function verdictClass(v) { return v === 'UNDERVALUED' ? 'verdict-under' : 'verdict-over'; }
+
+// Build summary panel
+const summaryPanel = document.createElement('div');
+summaryPanel.className = 'panel active';
+summaryPanel.id = 'panel-summary';
+let rows = results.map(r => `
+  <tr>
+    <td><b>${r.symbol}</b> &middot; ${r.company_name}</td>
+    <td>$${r.current_price}</td>
+    <td>$${r.dcf_fair_value}</td>
+    <td>${r.street_mean_target ? '$' + r.street_mean_target : 'n/a'}</td>
+    <td>$${r.blended_fair_value}</td>
+    <td class="${verdictClass(r.verdict)}">${r.verdict}</td>
+  </tr>`).join('');
+summaryPanel.innerHTML = `
+  <div class="card">
+    <table class="summary">
+      <tr><th>Company</th><th>Price</th><th>DCF Model</th><th>Street Mean Target</th><th>Blended Fair Value</th><th>Verdict</th></tr>
+      ${rows}
+    </table>
+  </div>
+  <div id="summary-chart" class="card" style="height:420px;"></div>
+`;
+panelsEl.appendChild(summaryPanel);
+
+Plotly.newPlot('summary-chart', [
+  { x: results.map(r=>r.symbol), y: results.map(r=>r.current_price), name: 'Current Price', type: 'bar', marker: {color:'#A23B72'} },
+  { x: results.map(r=>r.symbol), y: results.map(r=>r.dcf_fair_value), name: 'DCF Fair Value', type: 'bar', marker: {color:'#2E86AB'} },
+  { x: results.map(r=>r.symbol), y: results.map(r=>r.blended_fair_value), name: 'Blended Fair Value', type: 'bar', marker: {color:'#3ddc97'} },
+], {
+  paper_bgcolor:'#161922', plot_bgcolor:'#161922', font:{color:'#e8e8e8'},
+  barmode:'group', margin:{t:20}, legend:{orientation:'h', y:-0.15}
+}, {displayModeBar:false, responsive:true});
+
+// Build per-ticker panels
+results.forEach(r => {
+  const panel = document.createElement('div');
+  panel.className = 'panel';
+  panel.id = 'panel-' + r.symbol;
+  const a = r.assumptions;
+  panel.innerHTML = `
+    <div class="card">
+      <div class="stat-row">
+        <div class="stat"><div class="stat-label">Current Price</div><div class="stat-value">$${r.current_price}</div></div>
+        <div class="stat"><div class="stat-label">DCF Fair Value</div><div class="stat-value">$${r.dcf_fair_value}</div></div>
+        <div class="stat"><div class="stat-label">Street Mean Target</div><div class="stat-value">${r.street_mean_target ? '$'+r.street_mean_target : 'n/a'}</div></div>
+        <div class="stat"><div class="stat-label">Blended Fair Value</div><div class="stat-value">$${r.blended_fair_value}</div></div>
+        <div class="stat"><div class="stat-label">Verdict</div><div class="stat-value ${verdictClass(r.verdict)}">${r.verdict}</div></div>
+      </div>
+      <div id="chart-${r.symbol}" style="height:360px; margin-top:20px;"></div>
+      <div class="assumptions">
+        <b>Model assumptions (consensus-anchored):</b><br>
+        Discount rate: ${(a.discount_rate*100).toFixed(1)}% (beta ${a.beta}) &middot;
+        Terminal growth: ${(a.terminal_growth_rate*100).toFixed(1)}% &middot;
+        FCF margin (3yr avg): ${(a.fcf_margin*100).toFixed(1)}%<br>
+        5-yr revenue growth path: ${a.growth_path.map(g => (g*100).toFixed(1)+'%').join(' \u2192 ')}<br>
+        Street target range: ${r.street_low_target ? '$'+r.street_low_target : 'n/a'} \u2013 ${r.street_high_target ? '$'+r.street_high_target : 'n/a'} (median $${r.street_median_target ?? 'n/a'})
+      </div>
+    </div>
+  `;
+  panelsEl.appendChild(panel);
+
+  Plotly.newPlot('chart-' + r.symbol, [{
+    x: ['Current Price', 'DCF Model', 'Street Mean', 'Blended Fair Value'],
+    y: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value],
+    type: 'bar',
+    marker: {color: ['#A23B72', '#2E86AB', '#f4a261', '#3ddc97']},
+    text: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value].map(v => '$'+v.toFixed(2)),
+    textposition: 'outside',
+  }], {
+    paper_bgcolor:'#161922', plot_bgcolor:'#161922', font:{color:'#e8e8e8'},
+    margin:{t:20}, title: {text: r.symbol + ': ' + r.company_name, font:{size:14}}
+  }, {displayModeBar:false, responsive:true});
+});
+
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  [...document.querySelectorAll('.tab-btn')].find(b => b.textContent === (id === 'summary' ? 'Summary' : id)).classList.add('active');
+}
+</script>
+</body>
+</html>
