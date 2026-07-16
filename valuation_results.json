@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-16T16:50:39.471020",
+  "generated_at": "2026-07-16T20:32:00.393373",
   "results": [
     {
       "symbol": "MU",
@@ -28,7 +28,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 16:50"
+      "as_of": "2026-07-16 20:31"
     },
     {
       "symbol": "AVGO",
@@ -57,7 +57,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 16:50"
+      "as_of": "2026-07-16 20:31"
     },
     {
       "symbol": "GOOGL",
@@ -86,7 +86,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 16:50"
+      "as_of": "2026-07-16 20:31"
     },
     {
       "symbol": "MRVL",
@@ -115,7 +115,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 16:50"
+      "as_of": "2026-07-16 20:31"
     },
     {
       "symbol": "AMZN",
@@ -144,7 +144,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 16:50"
+      "as_of": "2026-07-16 20:31"
     },
     {
       "symbol": "SNDK",
@@ -173,7 +173,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 16:50"
+      "as_of": "2026-07-16 20:32"
     }
   ]
 }
