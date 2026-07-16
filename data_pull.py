@@ -22,7 +22,7 @@ from datetime import datetime
 
 import yfinance as yf
 
-TICKERS = ["MU", "AVGO", "GOOGL", "MRVL", "AMZN", "SNDK"]
+TICKERS = ["MU", "AVGO", "GOOGL", "MRVL", "AMZN", "SNDK", "WDC", "ASML", "MSFT", "AAPL"]
 
 # --- Global assumptions (kept intentionally conservative / adjustable) ---
 RISK_FREE_RATE = 0.043       # ~10yr Treasury, update as needed
@@ -95,16 +95,42 @@ def get_consensus_growth_path(ticker_obj, years=PROJECTION_YEARS):
 
 
 def get_historical_fcf_margin(income_statement, cash_flow):
+    """
+    Returns (margin, quality_info).
+
+    Instead of a flat average of the last 3 years (which lets a single stale
+    downturn year drag the whole forecast negative for cyclical names), this
+    weights the most recent year more heavily: weights [3, 2, 1] for the
+    3 most recent years, most-recent first (yfinance financials are ordered
+    most-recent-first by default).
+
+    quality_info flags:
+      - "negative_years": count of years with negative FCF margin
+      - "weighted_margin_negative": True if the final weighted margin is still negative
+      - "years_used": how many years of data were actually available
+    """
+    default_quality = {"negative_years": 0, "weighted_margin_negative": False, "years_used": 0}
     try:
         revenue = income_statement.loc["Total Revenue"].dropna()
         fcf = cash_flow.loc["Free Cash Flow"].dropna()
         margins = (fcf / revenue).dropna()
         margins = margins[(margins > -1) & (margins < 1)]  # sanity filter
         if len(margins) == 0:
-            return DEFAULT_FCF_MARGIN
-        return float(margins.mean())
+            return DEFAULT_FCF_MARGIN, default_quality
+
+        margins = margins.iloc[:3]  # most recent 3 years, most-recent first
+        weights = [3, 2, 1][:len(margins)]
+        weighted_margin = sum(m * w for m, w in zip(margins, weights)) / sum(weights)
+
+        negative_years = int((margins < 0).sum())
+        quality_info = {
+            "negative_years": negative_years,
+            "weighted_margin_negative": weighted_margin < 0,
+            "years_used": len(margins),
+        }
+        return float(weighted_margin), quality_info
     except Exception:
-        return DEFAULT_FCF_MARGIN
+        return DEFAULT_FCF_MARGIN, default_quality
 
 
 def get_discount_rate(info):
@@ -134,7 +160,7 @@ def value_company(symbol):
     latest_revenue = float(income_statement.loc["Total Revenue"].iloc[0])
 
     growth_path, growth_meta = get_consensus_growth_path(ticker)
-    fcf_margin = get_historical_fcf_margin(income_statement, cash_flow)
+    fcf_margin, fcf_quality = get_historical_fcf_margin(income_statement, cash_flow)
     discount_rate, beta = get_discount_rate(info)
     terminal_growth_rate = min(growth_meta["consensus_5y_growth"], TERMINAL_GROWTH_CAP)
 
@@ -189,6 +215,22 @@ def value_company(symbol):
 
     verdict = "UNDERVALUED" if blended_fair_value > current_price else "OVERVALUED"
 
+    # Flag results that likely reflect a cyclical downturn distorting the model
+    # rather than a genuine fundamental problem, so they aren't trusted at face value.
+    data_warning = None
+    if fcf_quality["weighted_margin_negative"]:
+        data_warning = (
+            f"Historical FCF margin is negative (based on {fcf_quality['years_used']} "
+            f"recent year(s), {fcf_quality['negative_years']} of which had negative FCF). "
+            "This DCF is likely distorted by a cyclical downturn and should not be trusted at face value."
+        )
+    elif fcf_quality["negative_years"] > 0:
+        data_warning = (
+            f"{fcf_quality['negative_years']} of the last {fcf_quality['years_used']} years had "
+            "negative FCF margin; recent years were weighted more heavily to reduce distortion, "
+            "but treat this DCF with extra caution."
+        )
+
     return {
         "symbol": symbol,
         "company_name": safe_get(info, "shortName", symbol),
@@ -202,6 +244,7 @@ def value_company(symbol):
         "street_high_target": round(street_high, 2) if street_high else None,
         "blended_fair_value": round(blended_fair_value, 2),
         "verdict": verdict,
+        "data_warning": data_warning,
         "assumptions": {
             "discount_rate": round(discount_rate, 4),
             "beta": round(beta, 2),
@@ -263,6 +306,8 @@ def build_dashboard(results):
   .verdict-under {{ color:#3ddc97; }}
   .verdict-over {{ color:#ff6b6b; }}
   .assumptions {{ font-size:13px; color:#9aa0a6; margin-top:16px; line-height:1.6; }}
+  .warning-badge {{ display:inline-block; background:#3a2a12; color:#f4a261; border:1px solid #6b4a1f; border-radius:6px; padding:2px 8px; font-size:11px; margin-left:8px; }}
+  .warning-card {{ background:#241a0f; border:1px solid #6b4a1f; border-radius:10px; padding:14px 16px; margin-top:12px; font-size:13px; color:#f4a261; }}
   table.summary {{ width:100%; border-collapse: collapse; font-size:13px; }}
   table.summary th, table.summary td {{ text-align:left; padding:8px 10px; border-bottom:1px solid #2c303c; }}
   table.summary th {{ color:#9aa0a6; font-weight:500; }}
@@ -304,7 +349,7 @@ summaryPanel.className = 'panel active';
 summaryPanel.id = 'panel-summary';
 let rows = results.map(r => `
   <tr>
-    <td><b>${{r.symbol}}</b> &middot; ${{r.company_name}}</td>
+    <td><b>${{r.symbol}}</b> &middot; ${{r.company_name}} ${{r.data_warning ? '<span class="warning-badge">⚠ check data</span>' : ''}}</td>
     <td>$${{r.current_price}}</td>
     <td>$${{r.dcf_fair_value}}</td>
     <td>${{r.street_mean_target ? '$' + r.street_mean_target : 'n/a'}}</td>
@@ -347,11 +392,12 @@ results.forEach(r => {{
         <div class="stat"><div class="stat-label">Verdict</div><div class="stat-value ${{verdictClass(r.verdict)}}">${{r.verdict}}</div></div>
       </div>
       <div id="chart-${{r.symbol}}" style="height:360px; margin-top:20px;"></div>
+      ${{r.data_warning ? `<div class="warning-card">⚠ <b>Data quality note:</b> ${{r.data_warning}}</div>` : ''}}
       <div class="assumptions">
         <b>Model assumptions (consensus-anchored):</b><br>
         Discount rate: ${{(a.discount_rate*100).toFixed(1)}}% (beta ${{a.beta}}) &middot;
         Terminal growth: ${{(a.terminal_growth_rate*100).toFixed(1)}}% &middot;
-        FCF margin (3yr avg): ${{(a.fcf_margin*100).toFixed(1)}}%<br>
+        FCF margin (weighted recent years): ${{(a.fcf_margin*100).toFixed(1)}}%<br>
         5-yr revenue growth path: ${{a.growth_path.map(g => (g*100).toFixed(1)+'%').join(' \\u2192 ')}}<br>
         Street target range: ${{r.street_low_target ? '$'+r.street_low_target : 'n/a'}} \\u2013 ${{r.street_high_target ? '$'+r.street_high_target : 'n/a'}} (median $${{r.street_median_target ?? 'n/a'}})
       </div>
