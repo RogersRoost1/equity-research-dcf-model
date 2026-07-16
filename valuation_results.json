@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-07-15T18:48:14.521073",
+  "generated_at": "2026-07-16T16:50:39.471020",
   "results": [
     {
       "symbol": "MU",
       "company_name": "Micron Technology, Inc.",
-      "current_price": 904.28,
+      "current_price": 853.2,
       "shares_outstanding": 1129393151,
-      "market_cap": 1021287661568,
+      "market_cap": 963598221312,
       "dcf_fair_value": -92.74,
-      "street_mean_target": 1486.0,
+      "street_mean_target": 1489.57,
       "street_median_target": 1550.0,
       "street_low_target": 361.0,
       "street_high_target": 2200.0,
-      "blended_fair_value": 696.63,
+      "blended_fair_value": 698.42,
       "verdict": "OVERVALUED",
       "assumptions": {
         "discount_rate": 0.13,
@@ -28,20 +28,20 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-15 18:48"
+      "as_of": "2026-07-16 16:50"
     },
     {
       "symbol": "AVGO",
       "company_name": "Broadcom Inc.",
-      "current_price": 394.28,
+      "current_price": 374.45,
       "shares_outstanding": 4757580198,
-      "market_cap": 1875818708992,
+      "market_cap": 1781475966976,
       "dcf_fair_value": 303.17,
-      "street_mean_target": 523.73,
+      "street_mean_target": 524.51,
       "street_median_target": 525.0,
       "street_low_target": 215.88,
-      "street_high_target": 650.0,
-      "blended_fair_value": 413.45,
+      "street_high_target": 675.0,
+      "blended_fair_value": 413.84,
       "verdict": "UNDERVALUED",
       "assumptions": {
         "discount_rate": 0.1161,
@@ -57,14 +57,14 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-15 18:48"
+      "as_of": "2026-07-16 16:50"
     },
     {
       "symbol": "GOOGL",
       "company_name": "Alphabet Inc.",
-      "current_price": 370.92,
+      "current_price": 354.46,
       "shares_outstanding": 5867155790,
-      "market_cap": 4526178304000,
+      "market_cap": 4325323833344,
       "dcf_fair_value": 369.03,
       "street_mean_target": 431.72,
       "street_median_target": 430.0,
@@ -86,20 +86,20 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-15 18:48"
+      "as_of": "2026-07-16 16:50"
     },
     {
       "symbol": "MRVL",
       "company_name": "Marvell Technology, Inc.",
-      "current_price": 206.26,
+      "current_price": 188.3,
       "shares_outstanding": 875766423,
-      "market_cap": 185127518208,
-      "dcf_fair_value": 54.77,
-      "street_mean_target": 252.56,
+      "market_cap": 169007628288,
+      "dcf_fair_value": 54.93,
+      "street_mean_target": 253.69,
       "street_median_target": 242.5,
       "street_low_target": 110.0,
-      "street_high_target": 385.0,
-      "blended_fair_value": 153.67,
+      "street_high_target": 400.0,
+      "blended_fair_value": 154.31,
       "verdict": "OVERVALUED",
       "assumptions": {
         "discount_rate": 0.13,
@@ -108,27 +108,27 @@
         "fcf_margin": 0.1943,
         "growth_path": [
           0.4071,
-          0.448,
-          0.332,
-          0.216,
+          0.45,
+          0.3333,
+          0.2167,
           0.1
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-15 18:48"
+      "as_of": "2026-07-16 16:50"
     },
     {
       "symbol": "AMZN",
       "company_name": "Amazon.com, Inc.",
-      "current_price": 254.96,
+      "current_price": 249.89,
       "shares_outstanding": 10757109436,
-      "market_cap": 2742632841216,
-      "dcf_fair_value": 21.17,
-      "street_mean_target": 314.27,
+      "market_cap": 2688094044160,
+      "dcf_fair_value": 21.18,
+      "street_mean_target": 314.35,
       "street_median_target": 315.0,
       "street_low_target": 207.0,
       "street_high_target": 370.0,
-      "blended_fair_value": 167.72,
+      "blended_fair_value": 167.76,
       "verdict": "OVERVALUED",
       "assumptions": {
         "discount_rate": 0.1161,
@@ -136,28 +136,28 @@
         "terminal_growth_rate": 0.04,
         "fcf_margin": 0.0214,
         "growth_path": [
-          0.148,
-          0.1299,
-          0.1199,
+          0.1481,
+          0.1301,
+          0.1201,
           0.11,
           0.1
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-15 18:48"
+      "as_of": "2026-07-16 16:50"
     },
     {
       "symbol": "SNDK",
       "company_name": "Sandisk Corporation",
-      "current_price": 1615.0,
+      "current_price": 1411.08,
       "shares_outstanding": 148089758,
-      "market_cap": 239164964864,
+      "market_cap": 208966483968,
       "dcf_fair_value": -259.89,
-      "street_mean_target": 2112.32,
+      "street_mean_target": 2144.14,
       "street_median_target": 2250.0,
       "street_low_target": 1000.0,
       "street_high_target": 3250.0,
-      "blended_fair_value": 926.21,
+      "blended_fair_value": 942.12,
       "verdict": "OVERVALUED",
       "assumptions": {
         "discount_rate": 0.103,
@@ -173,7 +173,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-15 18:48"
+      "as_of": "2026-07-16 16:50"
     }
   ]
 }
