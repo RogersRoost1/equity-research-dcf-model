@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-16T18:24:05.210028",
+  "generated_at": "2026-07-17T13:51:58.648762",
   "results": [
     {
       "symbol": "MU",
       "company_name": "Micron Technology, Inc.",
-      "current_price": 853.2,
+      "current_price": 828.0,
       "shares_outstanding": 1129393151,
-      "market_cap": 963598221312,
+      "market_cap": 934346948608,
       "dcf_fair_value": -65.22,
       "street_mean_target": 1489.57,
       "street_median_target": 1550.0,
@@ -29,14 +29,14 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 18:23"
+      "as_of": "2026-07-17 13:51"
     },
     {
       "symbol": "AVGO",
       "company_name": "Broadcom Inc.",
-      "current_price": 374.45,
+      "current_price": 361.83,
       "shares_outstanding": 4757580198,
-      "market_cap": 1781475966976,
+      "market_cap": 1721459015680,
       "dcf_fair_value": 284.06,
       "street_mean_target": 524.51,
       "street_median_target": 525.0,
@@ -59,14 +59,14 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 18:23"
+      "as_of": "2026-07-17 13:51"
     },
     {
       "symbol": "GOOGL",
       "company_name": "Alphabet Inc.",
-      "current_price": 354.46,
+      "current_price": 343.69,
       "shares_outstanding": 5867155790,
-      "market_cap": 4325323833344,
+      "market_cap": 4193902395392,
       "dcf_fair_value": 352.61,
       "street_mean_target": 431.72,
       "street_median_target": 430.0,
@@ -89,14 +89,14 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 18:23"
+      "as_of": "2026-07-17 13:51"
     },
     {
       "symbol": "MRVL",
       "company_name": "Marvell Technology, Inc.",
-      "current_price": 188.3,
+      "current_price": 181.82,
       "shares_outstanding": 875766423,
-      "market_cap": 169007628288,
+      "market_cap": 163263332352,
       "dcf_fair_value": 55.48,
       "street_mean_target": 253.69,
       "street_median_target": 242.5,
@@ -119,14 +119,14 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 18:23"
+      "as_of": "2026-07-17 13:51"
     },
     {
       "symbol": "AMZN",
       "company_name": "Amazon.com, Inc.",
-      "current_price": 249.89,
+      "current_price": 245.43,
       "shares_outstanding": 10757109436,
-      "market_cap": 2688094044160,
+      "market_cap": 2640063758336,
       "dcf_fair_value": 34.64,
       "street_mean_target": 314.35,
       "street_median_target": 315.0,
@@ -149,14 +149,14 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 18:23"
+      "as_of": "2026-07-17 13:51"
     },
     {
       "symbol": "SNDK",
       "company_name": "Sandisk Corporation",
-      "current_price": 1411.08,
+      "current_price": 1360.31,
       "shares_outstanding": 148089758,
-      "market_cap": 208966483968,
+      "market_cap": 201447997440,
       "dcf_fair_value": -187.11,
       "street_mean_target": 2144.14,
       "street_median_target": 2250.0,
@@ -179,14 +179,14 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 18:23"
+      "as_of": "2026-07-17 13:51"
     },
     {
       "symbol": "WDC",
       "company_name": "Western Digital Corporation",
-      "current_price": 466.81,
+      "current_price": 435.1,
       "shares_outstanding": 344682131,
-      "market_cap": 160901070848,
+      "market_cap": 149971206144,
       "dcf_fair_value": -12.92,
       "street_mean_target": 631.12,
       "street_median_target": 615.0,
@@ -209,25 +209,25 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 18:24"
+      "as_of": "2026-07-17 13:51"
     },
     {
       "symbol": "ASML",
       "company_name": "ASML Holding N.V. - New York Re",
-      "current_price": 1784.87,
+      "current_price": 1723.5,
       "shares_outstanding": 384100000,
-      "market_cap": 685568557056,
-      "dcf_fair_value": 801.14,
-      "street_mean_target": 2033.69,
-      "street_median_target": 2101.68,
-      "street_low_target": 885.58,
-      "street_high_target": 2845.98,
-      "blended_fair_value": 1417.42,
+      "market_cap": 661996371968,
+      "dcf_fair_value": 692.97,
+      "street_mean_target": 2032.06,
+      "street_median_target": 2100.0,
+      "street_low_target": 884.87,
+      "street_high_target": 2843.7,
+      "blended_fair_value": 1362.51,
       "verdict": "OVERVALUED",
       "data_warning": null,
       "assumptions": {
-        "discount_rate": 0.103,
-        "beta": 1.2,
+        "discount_rate": 0.1127,
+        "beta": 1.39,
         "terminal_growth_rate": 0.04,
         "fcf_margin": 0.2955,
         "growth_path": [
@@ -239,14 +239,14 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 18:24"
+      "as_of": "2026-07-17 13:51"
     },
     {
       "symbol": "MSFT",
       "company_name": "Microsoft Corporation",
-      "current_price": 401.1,
+      "current_price": 393.77,
       "shares_outstanding": 7428434704,
-      "market_cap": 2979545219072,
+      "market_cap": 2925131988992,
       "dcf_fair_value": 274.45,
       "street_mean_target": 558.66,
       "street_median_target": 550.0,
@@ -269,14 +269,14 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-07-16 18:24"
+      "as_of": "2026-07-17 13:51"
     },
     {
       "symbol": "AAPL",
       "company_name": "Apple Inc.",
-      "current_price": 333.26,
+      "current_price": 331.53,
       "shares_outstanding": 14687356000,
-      "market_cap": 4894708203520,
+      "market_cap": 4869739511808,
       "dcf_fair_value": 165.52,
       "street_mean_target": 315.79,
       "street_median_target": 315.0,
@@ -299,7 +299,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0908
       },
-      "as_of": "2026-07-16 18:24"
+      "as_of": "2026-07-17 13:51"
     }
   ]
 }
