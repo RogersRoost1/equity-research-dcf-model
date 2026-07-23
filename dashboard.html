@@ -2,18 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Tech Valuation Dashboard</title>
+<title>Sector Valuation Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.32.0/plotly.min.js"></script>
 <style>
   body { font-family: -apple-system, Segoe UI, Roboto, sans-serif; background:#0f1117; color:#e8e8e8; margin:0; padding:24px; }
   h1 { font-size: 20px; margin-bottom:4px; }
   .subtitle { color:#9aa0a6; font-size:13px; margin-bottom:20px; }
-  .tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
-  .tab-btn { background:#1b1e27; border:1px solid #2c303c; color:#cfd2da; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:14px; }
-  .tab-btn.active { background:#2E86AB; color:white; border-color:#2E86AB; }
-  .panel { display:none; }
-  .panel.active { display:block; }
+  .sector-tabs { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .sector-btn { background:#1b1e27; border:1px solid #2c303c; color:#cfd2da; padding:9px 18px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600; }
+  .sector-btn.active { background:#2E86AB; color:white; border-color:#2E86AB; }
+  .company-tabs { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+  .company-btn { background:#161922; border:1px solid #2c303c; color:#cfd2da; padding:6px 14px; border-radius:6px; cursor:pointer; font-size:13px; }
+  .company-btn.active { background:#3ddc97; color:#0f1117; border-color:#3ddc97; }
+  .sector-panel { display:none; }
+  .sector-panel.active { display:block; }
+  .company-panel { display:none; }
+  .company-panel.active { display:block; }
   .card { background:#161922; border:1px solid #2c303c; border-radius:12px; padding:20px; margin-bottom:16px; }
+  .sector-note { font-size:13px; color:#9aa0a6; margin-bottom:16px; line-height:1.6; }
   .stat-row { display:flex; gap:24px; flex-wrap:wrap; margin-top:12px; }
   .stat { min-width:140px; }
   .stat-label { font-size:12px; color:#9aa0a6; text-transform:uppercase; letter-spacing:0.5px;}
@@ -29,115 +35,141 @@
 </style>
 </head>
 <body>
-<h1>Tech Valuation Dashboard</h1>
-<div class="subtitle">Generated July 16, 2026 06:24 PM &middot; DCF assumptions anchored to Yahoo Finance consensus analyst estimates &middot; Not investment advice</div>
+<h1>Sector Valuation Dashboard</h1>
+<div class="subtitle">Generated July 23, 2026 02:47 PM &middot; DCF assumptions anchored to Yahoo Finance consensus analyst estimates &middot; Not investment advice</div>
 
-<div class="tabs" id="tabs"></div>
-<div id="panels"></div>
+<div class="sector-tabs" id="sector-tabs"></div>
+<div id="sector-panels"></div>
 
 <script>
-const results = [{"symbol": "MU", "company_name": "Micron Technology, Inc.", "current_price": 853.2, "shares_outstanding": 1129393151, "market_cap": 963598221312, "dcf_fair_value": -65.22, "street_mean_target": 1489.57, "street_median_target": 1550.0, "street_low_target": 361.0, "street_high_target": 2200.0, "blended_fair_value": 712.18, "verdict": "OVERVALUED", "data_warning": "Historical FCF margin is negative (based on 3 recent year(s), 1 of which had negative FCF). This DCF is likely distorted by a cyclical downturn and should not be trusted at face value.", "assumptions": {"discount_rate": 0.13, "beta": 2.14, "terminal_growth_rate": 0.04, "fcf_margin": -0.0417, "growth_path": [0.6, 0.6, 0.4333, 0.2667, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-16 18:23"}, {"symbol": "AVGO", "company_name": "Broadcom Inc.", "current_price": 374.45, "shares_outstanding": 4757580198, "market_cap": 1781475966976, "dcf_fair_value": 284.06, "street_mean_target": 524.51, "street_median_target": 525.0, "street_low_target": 215.88, "street_high_target": 675.0, "blended_fair_value": 404.28, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.1161, "beta": 1.46, "terminal_growth_rate": 0.04, "fcf_margin": 0.4182, "growth_path": [0.6, 0.6, 0.4333, 0.2667, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-16 18:23"}, {"symbol": "GOOGL", "company_name": "Alphabet Inc.", "current_price": 354.46, "shares_outstanding": 5867155790, "market_cap": 4325323833344, "dcf_fair_value": 352.61, "street_mean_target": 431.72, "street_median_target": 430.0, "street_low_target": 340.0, "street_high_target": 515.0, "blended_fair_value": 392.17, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.1053, "beta": 1.25, "terminal_growth_rate": 0.04, "fcf_margin": 0.1979, "growth_path": [0.2126, 0.1947, 0.1631, 0.1316, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-16 18:23"}, {"symbol": "MRVL", "company_name": "Marvell Technology, Inc.", "current_price": 188.3, "shares_outstanding": 875766423, "market_cap": 169007628288, "dcf_fair_value": 55.48, "street_mean_target": 253.69, "street_median_target": 242.5, "street_low_target": 110.0, "street_high_target": 400.0, "blended_fair_value": 154.58, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.13, "beta": 2.2, "terminal_growth_rate": 0.04, "fcf_margin": 0.1961, "growth_path": [0.4071, 0.45, 0.3333, 0.2167, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-16 18:23"}, {"symbol": "AMZN", "company_name": "Amazon.com, Inc.", "current_price": 249.89, "shares_outstanding": 10757109436, "market_cap": 2688094044160, "dcf_fair_value": 34.64, "street_mean_target": 314.35, "street_median_target": 315.0, "street_low_target": 207.0, "street_high_target": 370.0, "blended_fair_value": 174.49, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.1161, "beta": 1.46, "terminal_growth_rate": 0.04, "fcf_margin": 0.0319, "growth_path": [0.1481, 0.1301, 0.1201, 0.11, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-16 18:23"}, {"symbol": "SNDK", "company_name": "Sandisk Corporation", "current_price": 1411.08, "shares_outstanding": 148089758, "market_cap": 208966483968, "dcf_fair_value": -187.11, "street_mean_target": 2144.14, "street_median_target": 2250.0, "street_low_target": 1000.0, "street_high_target": 3250.0, "blended_fair_value": 978.51, "verdict": "OVERVALUED", "data_warning": "Historical FCF margin is negative (based on 3 recent year(s), 3 of which had negative FCF). This DCF is likely distorted by a cyclical downturn and should not be trusted at face value.", "assumptions": {"discount_rate": 0.103, "beta": 1.2, "terminal_growth_rate": 0.04, "fcf_margin": -0.0574, "growth_path": [0.6, 0.6, 0.4333, 0.2667, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-16 18:23"}, {"symbol": "WDC", "company_name": "Western Digital Corporation", "current_price": 466.81, "shares_outstanding": 344682131, "market_cap": 160901070848, "dcf_fair_value": -12.92, "street_mean_target": 631.12, "street_median_target": 615.0, "street_low_target": 415.0, "street_high_target": 1050.0, "blended_fair_value": 309.1, "verdict": "OVERVALUED", "data_warning": "Historical FCF margin is negative (based on 3 recent year(s), 2 of which had negative FCF). This DCF is likely distorted by a cyclical downturn and should not be trusted at face value.", "assumptions": {"discount_rate": 0.13, "beta": 2.17, "terminal_growth_rate": 0.04, "fcf_margin": -0.0068, "growth_path": [0.3523, 0.4106, 0.3071, 0.2035, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-16 18:24"}, {"symbol": "ASML", "company_name": "ASML Holding N.V. - New York Re", "current_price": 1784.87, "shares_outstanding": 384100000, "market_cap": 685568557056, "dcf_fair_value": 801.14, "street_mean_target": 2033.69, "street_median_target": 2101.68, "street_low_target": 885.58, "street_high_target": 2845.98, "blended_fair_value": 1417.42, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.103, "beta": 1.2, "terminal_growth_rate": 0.04, "fcf_margin": 0.2955, "growth_path": [0.2912, 0.2349, 0.1899, 0.145, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-16 18:24"}, {"symbol": "MSFT", "company_name": "Microsoft Corporation", "current_price": 401.1, "shares_outstanding": 7428434704, "market_cap": 2979545219072, "dcf_fair_value": 274.45, "street_mean_target": 558.66, "street_median_target": 550.0, "street_low_target": 400.0, "street_high_target": 870.0, "blended_fair_value": 416.56, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.0995, "beta": 1.13, "terminal_growth_rate": 0.04, "fcf_margin": 0.2746, "growth_path": [0.1696, 0.1669, 0.1446, 0.1223, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-16 18:24"}, {"symbol": "AAPL", "company_name": "Apple Inc.", "current_price": 333.26, "shares_outstanding": 14687356000, "market_cap": 4894708203520, "dcf_fair_value": 165.52, "street_mean_target": 315.79, "street_median_target": 315.0, "street_low_target": 215.0, "street_high_target": 400.0, "blended_fair_value": 240.65, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.0978, "beta": 1.1, "terminal_growth_rate": 0.04, "fcf_margin": 0.2547, "growth_path": [0.1501, 0.0908, 0.0908, 0.0908, 0.0908], "consensus_5y_growth_estimate": 0.0908}, "as_of": "2026-07-16 18:24"}];
+const results = [{"symbol": "NVDA", "sector": "Semiconductors", "company_name": "NVIDIA Corporation", "current_price": 207.74, "shares_outstanding": 24221000000, "market_cap": 5031912800256, "dcf_fair_value": 140.12, "street_mean_target": 302.83, "street_median_target": 300.0, "street_low_target": 180.0, "street_high_target": 500.0, "blended_fair_value": 221.48, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.13, "beta": 2.21, "terminal_growth_rate": 0.04, "fcf_margin": 0.4532, "growth_path": [0.6, 0.4247, 0.3165, 0.2082, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-23 14:46"}, {"symbol": "TSM", "sector": "Semiconductors", "company_name": "Taiwan Semiconductor Manufactur", "current_price": 414.88, "shares_outstanding": 5186474013, "market_cap": 2151764328448, "dcf_fair_value": 7145.97, "street_mean_target": 527.26, "street_median_target": 530.0, "street_low_target": 354.0, "street_high_target": 700.0, "blended_fair_value": 3836.61, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.1053, "beta": 1.25, "terminal_growth_rate": 0.04, "fcf_margin": 0.2515, "growth_path": [0.4177, 0.3133, 0.2422, 0.1711, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-23 14:46"}, {"symbol": "AVGO", "sector": "Semiconductors", "company_name": "Broadcom Inc.", "current_price": 389.96, "shares_outstanding": 4757580198, "market_cap": 1855289819136, "dcf_fair_value": 284.06, "street_mean_target": 525.44, "street_median_target": 530.0, "street_low_target": 215.88, "street_high_target": 675.0, "blended_fair_value": 404.75, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.1161, "beta": 1.46, "terminal_growth_rate": 0.04, "fcf_margin": 0.4182, "growth_path": [0.6, 0.6, 0.4333, 0.2667, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-23 14:46"}, {"symbol": "ASML", "sector": "Semiconductors", "company_name": "ASML Holding N.V. - New York Re", "current_price": 1795.36, "shares_outstanding": 384100000, "market_cap": 689597775872, "dcf_fair_value": 726.43, "street_mean_target": 2110.93, "street_median_target": 2286.92, "street_low_target": 880.24, "street_high_target": 2843.39, "blended_fair_value": 1418.68, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.1127, "beta": 1.39, "terminal_growth_rate": 0.04, "fcf_margin": 0.2955, "growth_path": [0.3042, 0.2603, 0.2069, 0.1534, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-23 14:46"}, {"symbol": "AMD", "sector": "Semiconductors", "company_name": "Advanced Micro Devices, Inc.", "current_price": 535.73, "shares_outstanding": 1630600639, "market_cap": 873561587712, "dcf_fair_value": 110.79, "street_mean_target": 541.66, "street_median_target": 540.0, "street_low_target": 320.0, "street_high_target": 725.0, "blended_fair_value": 326.23, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.13, "beta": 2.47, "terminal_growth_rate": 0.04, "fcf_margin": 0.1365, "growth_path": [0.4333, 0.574, 0.416, 0.258, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-23 14:46"}, {"symbol": "XOM", "sector": "Energy", "company_name": "ExxonMobil Holdings Corporation", "current_price": 157.75, "shares_outstanding": 4144947162, "market_cap": 653865451520, "dcf_fair_value": 70.93, "street_mean_target": 167.14, "street_median_target": 168.0, "street_low_target": 130.0, "street_high_target": 185.0, "blended_fair_value": 119.04, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.16, "terminal_growth_rate": -0.0281, "fcf_margin": 0.0833, "growth_path": [0.1886, -0.0281, -0.0281, -0.0281, -0.0281], "consensus_5y_growth_estimate": -0.0281}, "as_of": "2026-07-23 14:46"}, {"symbol": "CVX", "sector": "Energy", "company_name": "Chevron Corporation", "current_price": 195.51, "shares_outstanding": 1991597732, "market_cap": 389377261568, "dcf_fair_value": 49.69, "street_mean_target": 214.13, "street_median_target": 216.0, "street_low_target": 170.0, "street_high_target": 243.0, "blended_fair_value": 131.91, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.49, "terminal_growth_rate": -0.0763, "fcf_margin": 0.0877, "growth_path": [0.2076, -0.0763, -0.0763, -0.0763, -0.0763], "consensus_5y_growth_estimate": -0.0763}, "as_of": "2026-07-23 14:46"}, {"symbol": "SHEL", "sector": "Energy", "company_name": "Shell PLC", "current_price": 88.47, "shares_outstanding": 2766946104, "market_cap": 244791721984, "dcf_fair_value": 64.45, "street_mean_target": 97.07, "street_median_target": 97.0, "street_low_target": 78.0, "street_high_target": 120.6, "blended_fair_value": 80.76, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": -0.23, "terminal_growth_rate": -0.0727, "fcf_margin": 0.1024, "growth_path": [0.1718, -0.0727, -0.0727, -0.0727, -0.0727], "consensus_5y_growth_estimate": -0.0727}, "as_of": "2026-07-23 14:46"}, {"symbol": "BP", "sector": "Energy", "company_name": "BP p.l.c.", "current_price": 44.1, "shares_outstanding": 2575130228, "market_cap": 113563500544, "dcf_fair_value": 21.95, "street_mean_target": 47.58, "street_median_target": 47.5, "street_low_target": 35.0, "street_high_target": 62.0, "blended_fair_value": 34.76, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": -0.23, "terminal_growth_rate": -0.0772, "fcf_margin": 0.065, "growth_path": [0.1065, -0.0772, -0.0772, -0.0772, -0.0772], "consensus_5y_growth_estimate": -0.0772}, "as_of": "2026-07-23 14:46"}, {"symbol": "COP", "sector": "Energy", "company_name": "ConocoPhillips", "current_price": 121.16, "shares_outstanding": 1218294007, "market_cap": 147608502272, "dcf_fair_value": 39.18, "street_mean_target": 140.72, "street_median_target": 142.0, "street_low_target": 115.0, "street_high_target": 183.0, "blended_fair_value": 89.95, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.12, "terminal_growth_rate": -0.0752, "fcf_margin": 0.1361, "growth_path": [0.171, -0.0752, -0.0752, -0.0752, -0.0752], "consensus_5y_growth_estimate": -0.0752}, "as_of": "2026-07-23 14:46"}, {"symbol": "EQT", "sector": "Natural Gas", "company_name": "EQT Corporation", "current_price": 53.71, "shares_outstanding": 625513000, "market_cap": 33602560000, "dcf_fair_value": 27.16, "street_mean_target": 67.24, "street_median_target": 68.0, "street_low_target": 52.0, "street_high_target": 79.0, "blended_fair_value": 47.2, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.0705, "beta": 0.55, "terminal_growth_rate": -0.0203, "fcf_margin": 0.2446, "growth_path": [0.0995, -0.0203, -0.0203, -0.0203, -0.0203], "consensus_5y_growth_estimate": -0.0203}, "as_of": "2026-07-23 14:46"}, {"symbol": "WMB", "sector": "Natural Gas", "company_name": "Williams Companies, Inc. (The)", "current_price": 75.21, "shares_outstanding": 1222998265, "market_cap": 91980963840, "dcf_fair_value": 38.84, "street_mean_target": 83.59, "street_median_target": 83.5, "street_low_target": 67.0, "street_high_target": 99.0, "blended_fair_value": 61.22, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.0727, "beta": 0.59, "terminal_growth_rate": 0.04, "fcf_margin": 0.162, "growth_path": [0.021, 0.1188, 0.1125, 0.1063, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-23 14:46"}, {"symbol": "KMI", "sector": "Natural Gas", "company_name": "Kinder Morgan, Inc.", "current_price": 32.62, "shares_outstanding": 2224825757, "market_cap": 72562696192, "dcf_fair_value": 8.8, "street_mean_target": 35.33, "street_median_target": 35.0, "street_low_target": 31.0, "street_high_target": 43.0, "blended_fair_value": 22.07, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.103, "beta": 1.2, "terminal_growth_rate": 0.0339, "fcf_margin": 0.1971, "growth_path": [0.0619, 0.0339, 0.0339, 0.0339, 0.0339], "consensus_5y_growth_estimate": 0.0339}, "as_of": "2026-07-23 14:46"}, {"symbol": "LNG", "sector": "Natural Gas", "company_name": "Cheniere Energy, Inc.", "current_price": 272.25, "shares_outstanding": 209551868, "market_cap": 57051545600, "dcf_fair_value": 573.44, "street_mean_target": 303.82, "street_median_target": 304.5, "street_low_target": 255.0, "street_high_target": 340.0, "blended_fair_value": 438.63, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": -0.01, "terminal_growth_rate": 0.04, "fcf_margin": 0.1801, "growth_path": [0.1291, 0.0585, 0.0585, 0.0585, 0.0585], "consensus_5y_growth_estimate": 0.0585}, "as_of": "2026-07-23 14:47"}, {"symbol": "OKE", "sector": "Natural Gas", "company_name": "ONEOK, Inc.", "current_price": 93.16, "shares_outstanding": 630032852, "market_cap": 58693357568, "dcf_fair_value": 16.76, "street_mean_target": 96.05, "street_median_target": 95.0, "street_low_target": 88.0, "street_high_target": 113.0, "blended_fair_value": 56.4, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.0784, "beta": 0.71, "terminal_growth_rate": -0.0162, "fcf_margin": 0.1071, "growth_path": [0.1369, -0.0162, -0.0162, -0.0162, -0.0162], "consensus_5y_growth_estimate": -0.0162}, "as_of": "2026-07-23 14:47"}, {"symbol": "LMT", "sector": "Defense & Military", "company_name": "Lockheed Martin Corporation", "current_price": 567.41, "shares_outstanding": 230563608, "market_cap": 130824093696, "dcf_fair_value": 955.53, "street_mean_target": 606.68, "street_median_target": 600.0, "street_low_target": 487.0, "street_high_target": 756.0, "blended_fair_value": 781.11, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.11, "terminal_growth_rate": 0.04, "fcf_margin": 0.0862, "growth_path": [0.0544, 0.0527, 0.0527, 0.0527, 0.0527], "consensus_5y_growth_estimate": 0.0527}, "as_of": "2026-07-23 14:47"}, {"symbol": "RTX", "sector": "Defense & Military", "company_name": "RTX Corporation", "current_price": 208.44, "shares_outstanding": 1346683428, "market_cap": 280709431296, "dcf_fair_value": 156.7, "street_mean_target": 215.41, "street_median_target": 220.0, "street_low_target": 180.0, "street_high_target": 243.0, "blended_fair_value": 186.05, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.3, "terminal_growth_rate": 0.04, "fcf_margin": 0.0696, "growth_path": [0.0621, 0.0702, 0.0702, 0.0702, 0.0702], "consensus_5y_growth_estimate": 0.0702}, "as_of": "2026-07-23 14:47"}, {"symbol": "NOC", "sector": "Defense & Military", "company_name": "Northrop Grumman Corporation", "current_price": 530.64, "shares_outstanding": 142063026, "market_cap": 75384324096, "dcf_fair_value": 703.5, "street_mean_target": 649.85, "street_median_target": 640.0, "street_low_target": 533.0, "street_high_target": 815.0, "blended_fair_value": 676.67, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": -0.1, "terminal_growth_rate": 0.04, "fcf_margin": 0.0696, "growth_path": [0.0495, 0.0673, 0.0673, 0.0673, 0.0673], "consensus_5y_growth_estimate": 0.0673}, "as_of": "2026-07-23 14:47"}, {"symbol": "GD", "sector": "Defense & Military", "company_name": "General Dynamics Corporation", "current_price": 379.43, "shares_outstanding": 270430187, "market_cap": 102609321984, "dcf_fair_value": 492.14, "street_mean_target": 395.74, "street_median_target": 398.0, "street_low_target": 308.0, "street_high_target": 444.0, "blended_fair_value": 443.94, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.34, "terminal_growth_rate": 0.04, "fcf_margin": 0.075, "growth_path": [0.0542, 0.0441, 0.0441, 0.0441, 0.0441], "consensus_5y_growth_estimate": 0.0441}, "as_of": "2026-07-23 14:47"}, {"symbol": "LHX", "sector": "Defense & Military", "company_name": "L3Harris Technologies, Inc.", "current_price": 298.56, "shares_outstanding": 186294951, "market_cap": 55619284992, "dcf_fair_value": 338.03, "street_mean_target": 375.11, "street_median_target": 387.0, "street_low_target": 285.0, "street_high_target": 443.0, "blended_fair_value": 356.57, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.0803, "beta": 0.75, "terminal_growth_rate": 0.04, "fcf_margin": 0.1091, "growth_path": [0.0783, 0.079, 0.079, 0.079, 0.079], "consensus_5y_growth_estimate": 0.079}, "as_of": "2026-07-23 14:47"}, {"symbol": "AAPL", "sector": "Blue Chips", "company_name": "Apple Inc.", "current_price": 320.36, "shares_outstanding": 14687356000, "market_cap": 4705168130048, "dcf_fair_value": 166.44, "street_mean_target": 318.25, "street_median_target": 325.0, "street_low_target": 215.0, "street_high_target": 400.0, "blended_fair_value": 242.34, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.0978, "beta": 1.1, "terminal_growth_rate": 0.04, "fcf_margin": 0.2547, "growth_path": [0.1503, 0.0924, 0.0924, 0.0924, 0.0924], "consensus_5y_growth_estimate": 0.0924}, "as_of": "2026-07-23 14:47"}, {"symbol": "MSFT", "sector": "Blue Chips", "company_name": "Microsoft Corporation", "current_price": 381.79, "shares_outstanding": 7428434704, "market_cap": 2836102119424, "dcf_fair_value": 274.95, "street_mean_target": 556.75, "street_median_target": 550.0, "street_low_target": 400.0, "street_high_target": 870.0, "blended_fair_value": 415.85, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.0995, "beta": 1.13, "terminal_growth_rate": 0.04, "fcf_margin": 0.2746, "growth_path": [0.1698, 0.1679, 0.1453, 0.1226, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-23 14:47"}, {"symbol": "JPM", "sector": "Blue Chips", "company_name": "JP Morgan Chase & Co.", "current_price": 348.03, "shares_outstanding": 2658200000, "market_cap": 925053616128, "dcf_fair_value": -531.5, "street_mean_target": 369.7, "street_median_target": 370.0, "street_low_target": 305.0, "street_high_target": 420.0, "blended_fair_value": -80.9, "verdict": "OVERVALUED", "data_warning": "Historical FCF margin is negative (based on 3 recent year(s), 2 of which had negative FCF). This DCF is likely distorted by a cyclical downturn and should not be trusted at face value.", "assumptions": {"discount_rate": 0.0921, "beta": 0.98, "terminal_growth_rate": 0.0135, "fcf_margin": -0.475, "growth_path": [0.143, 0.0135, 0.0135, 0.0135, 0.0135], "consensus_5y_growth_estimate": 0.0135}, "as_of": "2026-07-23 14:47"}, {"symbol": "PG", "sector": "Blue Chips", "company_name": "Procter & Gamble Company (The)", "current_price": 145.9, "shares_outstanding": 2328598978, "market_cap": 339742588928, "dcf_fair_value": 139.58, "street_mean_target": 163.61, "street_median_target": 163.0, "street_low_target": 145.0, "street_high_target": 186.0, "blended_fair_value": 151.59, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.38, "terminal_growth_rate": 0.0261, "fcf_margin": 0.1769, "growth_path": [0.0334, 0.0261, 0.0261, 0.0261, 0.0261], "consensus_5y_growth_estimate": 0.0261}, "as_of": "2026-07-23 14:47"}, {"symbol": "KO", "sector": "Blue Chips", "company_name": "Coca-Cola Company (The)", "current_price": 81.0, "shares_outstanding": 4302482418, "market_cap": 348479586304, "dcf_fair_value": 16.61, "street_mean_target": 88.3, "street_median_target": 89.0, "street_low_target": 75.0, "street_high_target": 98.0, "blended_fair_value": 52.46, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.35, "terminal_growth_rate": 0.0131, "fcf_margin": 0.1243, "growth_path": [0.0187, 0.0131, 0.0131, 0.0131, 0.0131], "consensus_5y_growth_estimate": 0.0131}, "as_of": "2026-07-23 14:47"}, {"symbol": "JNJ", "sector": "Major Pharma", "company_name": "Johnson & Johnson", "current_price": 258.43, "shares_outstanding": 2407216971, "market_cap": 622085013504, "dcf_fair_value": 308.95, "street_mean_target": 270.59, "street_median_target": 274.0, "street_low_target": 190.0, "street_high_target": 305.0, "blended_fair_value": 289.77, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.23, "terminal_growth_rate": 0.04, "fcf_margin": 0.2051, "growth_path": [0.0749, 0.0708, 0.0708, 0.0708, 0.0708], "consensus_5y_growth_estimate": 0.0708}, "as_of": "2026-07-23 14:47"}, {"symbol": "PFE", "sector": "Major Pharma", "company_name": "Pfizer, Inc.", "current_price": 24.98, "shares_outstanding": 5699444169, "market_cap": 142372110336, "dcf_fair_value": 2.34, "street_mean_target": 28.75, "street_median_target": 28.0, "street_low_target": 24.0, "street_high_target": 35.46, "blended_fair_value": 15.54, "verdict": "OVERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.31, "terminal_growth_rate": -0.0415, "fcf_margin": 0.1374, "growth_path": [-0.013, -0.0415, -0.0415, -0.0415, -0.0415], "consensus_5y_growth_estimate": -0.0415}, "as_of": "2026-07-23 14:47"}, {"symbol": "MRK", "sector": "Major Pharma", "company_name": "Merck & Company, Inc.", "current_price": 130.15, "shares_outstanding": 2469824415, "market_cap": 321447657472, "dcf_fair_value": 184.45, "street_mean_target": 134.04, "street_median_target": 139.0, "street_low_target": 100.0, "street_high_target": 155.0, "blended_fair_value": 159.24, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.2, "terminal_growth_rate": 0.04, "fcf_margin": 0.2144, "growth_path": [0.0292, 0.047, 0.047, 0.047, 0.047], "consensus_5y_growth_estimate": 0.047}, "as_of": "2026-07-23 14:47"}, {"symbol": "ABBV", "sector": "Major Pharma", "company_name": "AbbVie Inc.", "current_price": 256.11, "shares_outstanding": 1766792821, "market_cap": 452493279232, "dcf_fair_value": 435.11, "street_mean_target": 266.89, "street_median_target": 275.0, "street_low_target": 200.0, "street_high_target": 328.0, "blended_fair_value": 351.0, "verdict": "UNDERVALUED", "data_warning": null, "assumptions": {"discount_rate": 0.07, "beta": 0.28, "terminal_growth_rate": 0.04, "fcf_margin": 0.3189, "growth_path": [0.0997, 0.0827, 0.0827, 0.0827, 0.0827], "consensus_5y_growth_estimate": 0.0827}, "as_of": "2026-07-23 14:47"}, {"symbol": "LLY", "sector": "Major Pharma", "company_name": "Eli Lilly and Company", "current_price": 1181.0, "shares_outstanding": 891741406, "market_cap": 1053146546176, "dcf_fair_value": 105.66, "street_mean_target": 1270.37, "street_median_target": 1300.0, "street_low_target": 850.0, "street_high_target": 1600.0, "blended_fair_value": 688.02, "verdict": "OVERVALUED", "data_warning": "1 of the last 3 years had negative FCF margin; recent years were weighted more heavily to reduce distortion, but treat this DCF with extra caution.", "assumptions": {"discount_rate": 0.07, "beta": 0.51, "terminal_growth_rate": 0.04, "fcf_margin": 0.0334, "growth_path": [0.3094, 0.1574, 0.1383, 0.1191, 0.1], "consensus_5y_growth_estimate": 0.1}, "as_of": "2026-07-23 14:47"}];
+const sectorNotes = {"Semiconductors": "Leaders across GPU/AI compute (NVDA), foundry (TSM), networking/custom silicon (AVGO), lithography equipment (ASML), and CPU/GPU (AMD). Could also consider: MU (memory), QCOM (mobile/edge), ARM (IP licensing), MRVL (data center interconnect).", "Energy": "Integrated majors and large independents. Could also consider: TTE (TotalEnergies), EOG (Permian-focused E&P), PBR (Petrobras, higher geopolitical/FX risk).", "Natural Gas": "Upstream producer (EQT), midstream pipelines (WMB, KMI, OKE), and LNG export (LNG/Cheniere). Could also consider: TRGP (Targa Resources), AR (Antero Resources).", "Defense & Military": "Prime contractors across aircraft, missiles, munitions, and electronics. Could also consider: BA (Boeing, mixed with commercial aero risk), HII (Huntington Ingalls, shipbuilding), TDG (TransDigm, aftermarket parts).", "Blue Chips": "Diversified mega-caps outside the other five sectors: consumer tech (AAPL), enterprise software/cloud (MSFT), banking (JPM), consumer staples (PG, KO). Could also consider: BRK-B (Berkshire), WMT, V/MA (payments), UNH (health insurance).", "Major Pharma": "Large-cap diversified and specialty pharma, including current GLP-1 leadership (LLY). Could also consider: NVO (Novo Nordisk, ADR \u2014 GLP-1 peer), BMY (Bristol Myers Squibb), AZN (AstraZeneca, ADR)."};
 
-const tabsEl = document.getElementById('tabs');
-const panelsEl = document.getElementById('panels');
+// Group results by sector, preserving basket order
+const sectorOrder = Object.keys(sectorNotes);
+const bySector = {};
+sectorOrder.forEach(s => bySector[s] = []);
+results.forEach(r => { if (bySector[r.sector]) bySector[r.sector].push(r); });
 
-// Summary tab button
-const summaryBtn = document.createElement('div');
-summaryBtn.className = 'tab-btn active';
-summaryBtn.textContent = 'Summary';
-summaryBtn.onclick = () => showPanel('summary');
-tabsEl.appendChild(summaryBtn);
-
-results.forEach(r => {
-  const btn = document.createElement('div');
-  btn.className = 'tab-btn';
-  btn.textContent = r.symbol;
-  btn.onclick = () => showPanel(r.symbol);
-  tabsEl.appendChild(btn);
-});
+const sectorTabsEl = document.getElementById('sector-tabs');
+const sectorPanelsEl = document.getElementById('sector-panels');
 
 function verdictClass(v) { return v === 'UNDERVALUED' ? 'verdict-under' : 'verdict-over'; }
 
-// Build summary panel
-const summaryPanel = document.createElement('div');
-summaryPanel.className = 'panel active';
-summaryPanel.id = 'panel-summary';
-let rows = results.map(r => `
-  <tr>
-    <td><b>${r.symbol}</b> &middot; ${r.company_name} ${r.data_warning ? '<span class="warning-badge">⚠ check data</span>' : ''}</td>
-    <td>$${r.current_price}</td>
-    <td>$${r.dcf_fair_value}</td>
-    <td>${r.street_mean_target ? '$' + r.street_mean_target : 'n/a'}</td>
-    <td>$${r.blended_fair_value}</td>
-    <td class="${verdictClass(r.verdict)}">${r.verdict}</td>
-  </tr>`).join('');
-summaryPanel.innerHTML = `
-  <div class="card">
-    <table class="summary">
-      <tr><th>Company</th><th>Price</th><th>DCF Model</th><th>Street Mean Target</th><th>Blended Fair Value</th><th>Verdict</th></tr>
-      ${rows}
-    </table>
-  </div>
-  <div id="summary-chart" class="card" style="height:420px;"></div>
-`;
-panelsEl.appendChild(summaryPanel);
+sectorOrder.forEach((sector, idx) => {
+  const items = bySector[sector];
 
-Plotly.newPlot('summary-chart', [
-  { x: results.map(r=>r.symbol), y: results.map(r=>r.current_price), name: 'Current Price', type: 'bar', marker: {color:'#A23B72'} },
-  { x: results.map(r=>r.symbol), y: results.map(r=>r.dcf_fair_value), name: 'DCF Fair Value', type: 'bar', marker: {color:'#2E86AB'} },
-  { x: results.map(r=>r.symbol), y: results.map(r=>r.blended_fair_value), name: 'Blended Fair Value', type: 'bar', marker: {color:'#3ddc97'} },
-], {
-  paper_bgcolor:'#161922', plot_bgcolor:'#161922', font:{color:'#e8e8e8'},
-  barmode:'group', margin:{t:20}, legend:{orientation:'h', y:-0.15}
-}, {displayModeBar:false, responsive:true});
+  // Sector tab button
+  const sBtn = document.createElement('div');
+  sBtn.className = 'sector-btn' + (idx === 0 ? ' active' : '');
+  sBtn.textContent = sector;
+  sBtn.onclick = () => showSector(sector);
+  sectorTabsEl.appendChild(sBtn);
 
-// Build per-ticker panels
-results.forEach(r => {
-  const panel = document.createElement('div');
-  panel.className = 'panel';
-  panel.id = 'panel-' + r.symbol;
-  const a = r.assumptions;
-  panel.innerHTML = `
+  // Sector panel
+  const sPanel = document.createElement('div');
+  sPanel.className = 'sector-panel' + (idx === 0 ? ' active' : '');
+  sPanel.id = 'sector-panel-' + sector;
+
+  const rows = items.map(r => `
+    <tr>
+      <td><b>${r.symbol}</b> &middot; ${r.company_name} ${r.data_warning ? '<span class="warning-badge">⚠ check data</span>' : ''}</td>
+      <td>$${r.current_price}</td>
+      <td>$${r.dcf_fair_value}</td>
+      <td>${r.street_mean_target ? '$' + r.street_mean_target : 'n/a'}</td>
+      <td>$${r.blended_fair_value}</td>
+      <td class="${verdictClass(r.verdict)}">${r.verdict}</td>
+    </tr>`).join('');
+
+  sPanel.innerHTML = `
+    <div class="sector-note">${sectorNotes[sector]}</div>
     <div class="card">
-      <div class="stat-row">
-        <div class="stat"><div class="stat-label">Current Price</div><div class="stat-value">$${r.current_price}</div></div>
-        <div class="stat"><div class="stat-label">DCF Fair Value</div><div class="stat-value">$${r.dcf_fair_value}</div></div>
-        <div class="stat"><div class="stat-label">Street Mean Target</div><div class="stat-value">${r.street_mean_target ? '$'+r.street_mean_target : 'n/a'}</div></div>
-        <div class="stat"><div class="stat-label">Blended Fair Value</div><div class="stat-value">$${r.blended_fair_value}</div></div>
-        <div class="stat"><div class="stat-label">Verdict</div><div class="stat-value ${verdictClass(r.verdict)}">${r.verdict}</div></div>
-      </div>
-      <div id="chart-${r.symbol}" style="height:360px; margin-top:20px;"></div>
-      ${r.data_warning ? `<div class="warning-card">⚠ <b>Data quality note:</b> ${r.data_warning}</div>` : ''}
-      <div class="assumptions">
-        <b>Model assumptions (consensus-anchored):</b><br>
-        Discount rate: ${(a.discount_rate*100).toFixed(1)}% (beta ${a.beta}) &middot;
-        Terminal growth: ${(a.terminal_growth_rate*100).toFixed(1)}% &middot;
-        FCF margin (weighted recent years): ${(a.fcf_margin*100).toFixed(1)}%<br>
-        5-yr revenue growth path: ${a.growth_path.map(g => (g*100).toFixed(1)+'%').join(' \u2192 ')}<br>
-        Street target range: ${r.street_low_target ? '$'+r.street_low_target : 'n/a'} \u2013 ${r.street_high_target ? '$'+r.street_high_target : 'n/a'} (median $${r.street_median_target ?? 'n/a'})
-      </div>
+      <table class="summary">
+        <tr><th>Company</th><th>Price</th><th>DCF Model</th><th>Street Mean Target</th><th>Blended Fair Value</th><th>Verdict</th></tr>
+        ${rows}
+      </table>
     </div>
+    <div id="chart-${sector.replace(/\s+/g,'-')}" class="card" style="height:380px;"></div>
+    <div class="company-tabs" id="company-tabs-${sector.replace(/\s+/g,'-')}"></div>
+    <div id="company-panels-${sector.replace(/\s+/g,'-')}"></div>
   `;
-  panelsEl.appendChild(panel);
+  sectorPanelsEl.appendChild(sPanel);
 
-  Plotly.newPlot('chart-' + r.symbol, [{
-    x: ['Current Price', 'DCF Model', 'Street Mean', 'Blended Fair Value'],
-    y: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value],
-    type: 'bar',
-    marker: {color: ['#A23B72', '#2E86AB', '#f4a261', '#3ddc97']},
-    text: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value].map(v => '$'+v.toFixed(2)),
-    textposition: 'outside',
-  }], {
+  // Sector summary chart
+  Plotly.newPlot('chart-' + sector.replace(/\s+/g,'-'), [
+    { x: items.map(r=>r.symbol), y: items.map(r=>r.current_price), name: 'Current Price', type: 'bar', marker: {color:'#A23B72'} },
+    { x: items.map(r=>r.symbol), y: items.map(r=>r.dcf_fair_value), name: 'DCF Fair Value', type: 'bar', marker: {color:'#2E86AB'} },
+    { x: items.map(r=>r.symbol), y: items.map(r=>r.blended_fair_value), name: 'Blended Fair Value', type: 'bar', marker: {color:'#3ddc97'} },
+  ], {
     paper_bgcolor:'#161922', plot_bgcolor:'#161922', font:{color:'#e8e8e8'},
-    margin:{t:20}, title: {text: r.symbol + ': ' + r.company_name, font:{size:14}}
+    barmode:'group', margin:{t:20}, legend:{orientation:'h', y:-0.2}
   }, {displayModeBar:false, responsive:true});
+
+  // Company sub-tabs within this sector
+  const cTabsEl = document.getElementById('company-tabs-' + sector.replace(/\s+/g,'-'));
+  const cPanelsEl = document.getElementById('company-panels-' + sector.replace(/\s+/g,'-'));
+
+  items.forEach((r, cIdx) => {
+    const cBtn = document.createElement('div');
+    cBtn.className = 'company-btn' + (cIdx === 0 ? ' active' : '');
+    cBtn.textContent = r.symbol;
+    cBtn.onclick = () => showCompany(sector, r.symbol);
+    cTabsEl.appendChild(cBtn);
+
+    const cPanel = document.createElement('div');
+    cPanel.className = 'company-panel' + (cIdx === 0 ? ' active' : '');
+    cPanel.id = 'company-panel-' + sector.replace(/\s+/g,'-') + '-' + r.symbol;
+    const a = r.assumptions;
+    cPanel.innerHTML = `
+      <div class="card">
+        <div class="stat-row">
+          <div class="stat"><div class="stat-label">Current Price</div><div class="stat-value">$${r.current_price}</div></div>
+          <div class="stat"><div class="stat-label">DCF Fair Value</div><div class="stat-value">$${r.dcf_fair_value}</div></div>
+          <div class="stat"><div class="stat-label">Street Mean Target</div><div class="stat-value">${r.street_mean_target ? '$'+r.street_mean_target : 'n/a'}</div></div>
+          <div class="stat"><div class="stat-label">Blended Fair Value</div><div class="stat-value">$${r.blended_fair_value}</div></div>
+          <div class="stat"><div class="stat-label">Verdict</div><div class="stat-value ${verdictClass(r.verdict)}">${r.verdict}</div></div>
+        </div>
+        <div id="companychart-${sector.replace(/\s+/g,'-')}-${r.symbol}" style="height:340px; margin-top:20px;"></div>
+        ${r.data_warning ? `<div class="warning-card">⚠ <b>Data quality note:</b> ${r.data_warning}</div>` : ''}
+        <div class="assumptions">
+          <b>Model assumptions (consensus-anchored):</b><br>
+          Discount rate: ${(a.discount_rate*100).toFixed(1)}% (beta ${a.beta}) &middot;
+          Terminal growth: ${(a.terminal_growth_rate*100).toFixed(1)}% &middot;
+          FCF margin (weighted recent years): ${(a.fcf_margin*100).toFixed(1)}%<br>
+          5-yr revenue growth path: ${a.growth_path.map(g => (g*100).toFixed(1)+'%').join(' \u2192 ')}<br>
+          Street target range: ${r.street_low_target ? '$'+r.street_low_target : 'n/a'} \u2013 ${r.street_high_target ? '$'+r.street_high_target : 'n/a'} (median $${r.street_median_target ?? 'n/a'})
+        </div>
+      </div>
+    `;
+    cPanelsEl.appendChild(cPanel);
+
+    Plotly.newPlot('companychart-' + sector.replace(/\s+/g,'-') + '-' + r.symbol, [{
+      x: ['Current Price', 'DCF Model', 'Street Mean', 'Blended Fair Value'],
+      y: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value],
+      type: 'bar',
+      marker: {color: ['#A23B72', '#2E86AB', '#f4a261', '#3ddc97']},
+      text: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value].map(v => '$'+v.toFixed(2)),
+      textposition: 'outside',
+    }], {
+      paper_bgcolor:'#161922', plot_bgcolor:'#161922', font:{color:'#e8e8e8'},
+      margin:{t:20}, title: {text: r.symbol + ': ' + r.company_name, font:{size:14}}
+    }, {displayModeBar:false, responsive:true});
+  });
 });
 
-function showPanel(id) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + id).classList.add('active');
-  [...document.querySelectorAll('.tab-btn')].find(b => b.textContent === (id === 'summary' ? 'Summary' : id)).classList.add('active');
+function showSector(sector) {
+  document.querySelectorAll('.sector-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sector-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sector-panel-' + sector).classList.add('active');
+  [...document.querySelectorAll('.sector-btn')].find(b => b.textContent === sector).classList.add('active');
+}
+
+function showCompany(sector, symbol) {
+  const key = sector.replace(/\s+/g,'-');
+  document.querySelectorAll('#company-panels-' + key + ' .company-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#company-tabs-' + key + ' .company-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('company-panel-' + key + '-' + symbol).classList.add('active');
+  [...document.querySelectorAll('#company-tabs-' + key + ' .company-btn')].find(b => b.textContent === symbol).classList.add('active');
 }
 </script>
 </body>
