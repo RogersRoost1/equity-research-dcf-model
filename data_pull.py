@@ -199,9 +199,82 @@ def get_discount_rate(info):
     return max(MIN_DISCOUNT_RATE, min(rate, MAX_DISCOUNT_RATE)), beta
 
 
+def get_fx_rate(from_currency, to_currency):
+    """
+    Fetch a spot FX rate to convert `from_currency` amounts into `to_currency`.
+    Returns None if unavailable (caller should fall back to no conversion,
+    with a data_warning flagging the figures may be off).
+    """
+    if not from_currency or not to_currency or from_currency == to_currency:
+        return 1.0
+    try:
+        pair = yf.Ticker(f"{from_currency}{to_currency}=X")
+        rate = safe_get(pair.info, "regularMarketPrice")
+        if rate is None:
+            hist = pair.history(period="5d")
+            if not hist.empty:
+                rate = float(hist["Close"].iloc[-1])
+        return float(rate) if rate else None
+    except Exception:
+        return None
+
+
+def is_financial_sector(info):
+    """
+    Flags banks/diversified financials/insurance where FCF-based DCF is not
+    a meaningful valuation method (operating cash flow is dominated by
+    deposits, loans, and trading positions rather than true FCF generation).
+    """
+    sector = (safe_get(info, "sector") or "").lower()
+    industry = (safe_get(info, "industry") or "").lower()
+    if "financial" in sector:
+        return True
+    bank_keywords = ["bank", "insurance", "capital markets", "asset management", "credit services"]
+    return any(k in industry for k in bank_keywords)
+
+
 def value_company(symbol, sector):
     ticker = yf.Ticker(symbol)
     info = ticker.info
+
+    # --- Banks/financials: FCF-based DCF isn't meaningful, skip it cleanly ---
+    if is_financial_sector(info):
+        current_price = safe_get(info, "currentPrice")
+        try:
+            targets = ticker.analyst_price_targets
+            street_mean = float(targets.get("mean")) if targets.get("mean") else None
+            street_median = float(targets.get("median")) if targets.get("median") else None
+            street_low = float(targets.get("low")) if targets.get("low") else None
+            street_high = float(targets.get("high")) if targets.get("high") else None
+        except Exception:
+            street_mean = street_median = street_low = street_high = None
+
+        return {
+            "symbol": symbol,
+            "sector": sector,
+            "company_name": safe_get(info, "shortName", symbol),
+            "current_price": round(current_price, 2) if current_price else None,
+            "shares_outstanding": safe_get(info, "sharesOutstanding"),
+            "market_cap": safe_get(info, "marketCap"),
+            "dcf_fair_value": None,
+            "street_mean_target": round(street_mean, 2) if street_mean else None,
+            "street_median_target": round(street_median, 2) if street_median else None,
+            "street_low_target": round(street_low, 2) if street_low else None,
+            "street_high_target": round(street_high, 2) if street_high else None,
+            "blended_fair_value": round(street_mean, 2) if street_mean else None,
+            "verdict": "N/A — bank/financial (FCF-based DCF not applicable)",
+            "data_warning": (
+                "This is a bank or diversified financial company. Free cash flow is not a "
+                "meaningful valuation metric for depository/financial institutions, since "
+                "operating cash flow is dominated by deposits, loans, and trading positions "
+                "rather than true cash generation. DCF fair value is intentionally omitted; "
+                "only the Street consensus target is shown. Consider a price-to-book or "
+                "dividend discount approach for this name instead."
+            ),
+            "assumptions": None,
+            "as_of": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        }
+
     income_statement = ticker.financials
     cash_flow = ticker.cashflow
     balance_sheet = ticker.balance_sheet
@@ -213,7 +286,31 @@ def value_company(symbol, sector):
     if not current_price or not shares_outstanding:
         raise ValueError(f"Missing core price/share data for {symbol}")
 
-    latest_revenue = float(income_statement.loc["Total Revenue"].iloc[0])
+    # --- Currency mismatch check (common for foreign ADRs like TSM, ASML) ---
+    # Some foreign issuers report financial statements in local currency
+    # (financialCurrency) while trading/quoting in USD (currency). If these
+    # differ, convert revenue/cash/debt figures to the quote currency before
+    # running the DCF, or the per-share result will be wildly off.
+    price_currency = safe_get(info, "currency", "USD")
+    financial_currency = safe_get(info, "financialCurrency", price_currency)
+    fx_rate = 1.0
+    currency_warning = None
+    if financial_currency and price_currency and financial_currency != price_currency:
+        fx_rate = get_fx_rate(financial_currency, price_currency)
+        if fx_rate is None:
+            fx_rate = 1.0
+            currency_warning = (
+                f"Financials are reported in {financial_currency} but the stock trades in "
+                f"{price_currency}, and an FX rate could not be retrieved to convert them. "
+                "Treat this DCF fair value with caution — it may be significantly off."
+            )
+        else:
+            currency_warning = (
+                f"Financials were reported in {financial_currency} and converted to "
+                f"{price_currency} at ~{fx_rate:.4f} for this model."
+            )
+
+    latest_revenue = float(income_statement.loc["Total Revenue"].iloc[0]) * fx_rate
 
     growth_path, growth_meta = get_consensus_growth_path(ticker)
     fcf_margin, fcf_quality = get_historical_fcf_margin(income_statement, cash_flow)
@@ -242,11 +339,11 @@ def value_company(symbol, sector):
     # --- Enterprise / equity value ---
     enterprise_value = sum(discounted_fcf) + discounted_terminal_value
     try:
-        total_debt = float(balance_sheet.loc["Total Debt"].iloc[0])
+        total_debt = float(balance_sheet.loc["Total Debt"].iloc[0]) * fx_rate
     except Exception:
         total_debt = 0.0
     try:
-        cash = float(balance_sheet.loc["Cash And Cash Equivalents"].iloc[0])
+        cash = float(balance_sheet.loc["Cash And Cash Equivalents"].iloc[0]) * fx_rate
     except Exception:
         cash = 0.0
     net_debt = total_debt - cash
@@ -287,6 +384,10 @@ def value_company(symbol, sector):
             "but treat this DCF with extra caution."
         )
 
+    if currency_warning:
+        data_warning = (currency_warning if not data_warning
+                         else f"{currency_warning} Also: {data_warning}")
+
     return {
         "symbol": symbol,
         "sector": sector,
@@ -322,7 +423,8 @@ def main():
             try:
                 result = value_company(symbol, sector)
                 results.append(result)
-                print(f"  {symbol}: DCF ${result['dcf_fair_value']} | "
+                dcf_display = f"${result['dcf_fair_value']}" if result['dcf_fair_value'] is not None else "N/A (bank)"
+                print(f"  {symbol}: DCF {dcf_display} | "
                       f"Street ${result['street_mean_target']} | "
                       f"Blended ${result['blended_fair_value']} | "
                       f"Price ${result['current_price']} -> {result['verdict']}")
@@ -419,7 +521,7 @@ sectorOrder.forEach((sector, idx) => {{
     <tr>
       <td><b>${{r.symbol}}</b> &middot; ${{r.company_name}} ${{r.data_warning ? '<span class="warning-badge">⚠ check data</span>' : ''}}</td>
       <td>$${{r.current_price}}</td>
-      <td>$${{r.dcf_fair_value}}</td>
+      <td>${{r.dcf_fair_value !== null ? '$' + r.dcf_fair_value : 'n/a (bank)'}}</td>
       <td>${{r.street_mean_target ? '$' + r.street_mean_target : 'n/a'}}</td>
       <td>$${{r.blended_fair_value}}</td>
       <td class="${{verdictClass(r.verdict)}}">${{r.verdict}}</td>
@@ -442,7 +544,7 @@ sectorOrder.forEach((sector, idx) => {{
   // Sector summary chart
   Plotly.newPlot('chart-' + sector.replace(/\\s+/g,'-'), [
     {{ x: items.map(r=>r.symbol), y: items.map(r=>r.current_price), name: 'Current Price', type: 'bar', marker: {{color:'#A23B72'}} }},
-    {{ x: items.map(r=>r.symbol), y: items.map(r=>r.dcf_fair_value), name: 'DCF Fair Value', type: 'bar', marker: {{color:'#2E86AB'}} }},
+    {{ x: items.map(r=>r.symbol), y: items.map(r=>r.dcf_fair_value ?? 0), name: 'DCF Fair Value', type: 'bar', marker: {{color:'#2E86AB'}} }},
     {{ x: items.map(r=>r.symbol), y: items.map(r=>r.blended_fair_value), name: 'Blended Fair Value', type: 'bar', marker: {{color:'#3ddc97'}} }},
   ], {{
     paper_bgcolor:'#161922', plot_bgcolor:'#161922', font:{{color:'#e8e8e8'}},
@@ -468,7 +570,7 @@ sectorOrder.forEach((sector, idx) => {{
       <div class="card">
         <div class="stat-row">
           <div class="stat"><div class="stat-label">Current Price</div><div class="stat-value">$${{r.current_price}}</div></div>
-          <div class="stat"><div class="stat-label">DCF Fair Value</div><div class="stat-value">$${{r.dcf_fair_value}}</div></div>
+          <div class="stat"><div class="stat-label">DCF Fair Value</div><div class="stat-value">${{r.dcf_fair_value !== null ? '$' + r.dcf_fair_value : 'n/a (bank)'}}</div></div>
           <div class="stat"><div class="stat-label">Street Mean Target</div><div class="stat-value">${{r.street_mean_target ? '$'+r.street_mean_target : 'n/a'}}</div></div>
           <div class="stat"><div class="stat-label">Blended Fair Value</div><div class="stat-value">$${{r.blended_fair_value}}</div></div>
           <div class="stat"><div class="stat-label">Verdict</div><div class="stat-value ${{verdictClass(r.verdict)}}">${{r.verdict}}</div></div>
@@ -489,10 +591,10 @@ sectorOrder.forEach((sector, idx) => {{
 
     Plotly.newPlot('companychart-' + sector.replace(/\\s+/g,'-') + '-' + r.symbol, [{{
       x: ['Current Price', 'DCF Model', 'Street Mean', 'Blended Fair Value'],
-      y: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value],
+      y: [r.current_price, r.dcf_fair_value ?? 0, r.street_mean_target || 0, r.blended_fair_value],
       type: 'bar',
       marker: {{color: ['#A23B72', '#2E86AB', '#f4a261', '#3ddc97']}},
-      text: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value].map(v => '$'+v.toFixed(2)),
+      text: [r.current_price, r.dcf_fair_value ?? 0, r.street_mean_target || 0, r.blended_fair_value].map(v => '$'+v.toFixed(2)),
       textposition: 'outside',
     }}], {{
       paper_bgcolor:'#161922', plot_bgcolor:'#161922', font:{{color:'#e8e8e8'}},
