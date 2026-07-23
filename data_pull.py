@@ -1,19 +1,33 @@
 """
-Multi-company DCF valuation dashboard.
+Sector-organized multi-company DCF valuation dashboard.
 
-Pulls live data from yfinance for a basket of tickers, builds a 5-year DCF
-for each one using growth/margin assumptions ANCHORED TO WALL STREET
-CONSENSUS (not hand-picked numbers), and renders an interactive tabbed
-HTML dashboard (dashboard.html) comparing:
+Extends the original single-basket script into six sector baskets:
+    - Semiconductors
+    - Energy (integrated oil & majors)
+    - Natural Gas / Midstream
+    - Defense & Military
+    - Blue Chips (diversified mega-cap, outside the other sectors)
+    - Major Pharma
 
+For each ticker, pulls live data from yfinance and builds a 5-year DCF
+using growth/margin assumptions ANCHORED TO WALL STREET CONSENSUS (not
+hand-picked numbers), then renders an interactive HTML dashboard
+(dashboard.html) with a two-level tab structure: Sector -> Company.
+
+Each company panel compares:
     - Your DCF "Model Fair Value"
     - The actual Street mean analyst price target (from Yahoo Finance)
-    - A "Blended Fair Value" (50/50 average of the two, per request to stay
-      closer to consensus rather than a lone independent model)
+    - A "Blended Fair Value" (50/50 average of the two)
     - Current market price
+
+Each sector panel also shows a summary table/chart across its 5 names.
 
 Run this daily (see README.md for automation options) and it will
 regenerate dashboard.html with fresh numbers.
+
+NOTE: requires `pip install yfinance` and outbound internet access to
+Yahoo Finance. Ticker basket picks below are a reasonable starting point,
+not a definitive "top 5" — swap names in SECTORS to fit your own view.
 """
 
 import json
@@ -22,7 +36,49 @@ from datetime import datetime
 
 import yfinance as yf
 
-TICKERS = ["MU", "AVGO", "GOOGL", "MRVL", "AMZN", "SNDK", "WDC", "ASML", "MSFT", "AAPL"]
+# --- Sector baskets -------------------------------------------------------
+# Picked as large, liquid, well-covered names (good analyst-estimate
+# coverage = better consensus data for the DCF inputs). Feel free to swap.
+SECTORS = {
+    "Semiconductors": {
+        "tickers": ["NVDA", "TSM", "AVGO", "ASML", "AMD"],
+        "note": "Leaders across GPU/AI compute (NVDA), foundry (TSM), networking/custom "
+                "silicon (AVGO), lithography equipment (ASML), and CPU/GPU (AMD). Could also "
+                "consider: MU (memory), QCOM (mobile/edge), ARM (IP licensing), MRVL (data "
+                "center interconnect).",
+    },
+    "Energy": {
+        "tickers": ["XOM", "CVX", "SHEL", "BP", "COP"],
+        "note": "Integrated majors and large independents. Could also consider: TTE "
+                "(TotalEnergies), EOG (Permian-focused E&P), PBR (Petrobras, higher "
+                "geopolitical/FX risk).",
+    },
+    "Natural Gas": {
+        "tickers": ["EQT", "WMB", "KMI", "LNG", "OKE"],
+        "note": "Upstream producer (EQT), midstream pipelines (WMB, KMI, OKE), and LNG "
+                "export (LNG/Cheniere). Could also consider: TRGP (Targa Resources), "
+                "AR (Antero Resources).",
+    },
+    "Defense & Military": {
+        "tickers": ["LMT", "RTX", "NOC", "GD", "LHX"],
+        "note": "Prime contractors across aircraft, missiles, munitions, and electronics. "
+                "Could also consider: BA (Boeing, mixed with commercial aero risk), "
+                "HII (Huntington Ingalls, shipbuilding), TDG (TransDigm, aftermarket parts).",
+    },
+    "Blue Chips": {
+        "tickers": ["AAPL", "MSFT", "JPM", "PG", "KO"],
+        "note": "Diversified mega-caps outside the other five sectors: consumer tech "
+                "(AAPL), enterprise software/cloud (MSFT), banking (JPM), consumer "
+                "staples (PG, KO). Could also consider: BRK-B (Berkshire), WMT, V/MA "
+                "(payments), UNH (health insurance).",
+    },
+    "Major Pharma": {
+        "tickers": ["JNJ", "PFE", "MRK", "ABBV", "LLY"],
+        "note": "Large-cap diversified and specialty pharma, including current GLP-1 "
+                "leadership (LLY). Could also consider: NVO (Novo Nordisk, ADR — GLP-1 "
+                "peer), BMY (Bristol Myers Squibb), AZN (AstraZeneca, ADR).",
+    },
+}
 
 # --- Global assumptions (kept intentionally conservative / adjustable) ---
 RISK_FREE_RATE = 0.043       # ~10yr Treasury, update as needed
@@ -143,7 +199,7 @@ def get_discount_rate(info):
     return max(MIN_DISCOUNT_RATE, min(rate, MAX_DISCOUNT_RATE)), beta
 
 
-def value_company(symbol):
+def value_company(symbol, sector):
     ticker = yf.Ticker(symbol)
     info = ticker.info
     income_statement = ticker.financials
@@ -233,6 +289,7 @@ def value_company(symbol):
 
     return {
         "symbol": symbol,
+        "sector": sector,
         "company_name": safe_get(info, "shortName", symbol),
         "current_price": round(current_price, 2),
         "shares_outstanding": shares_outstanding,
@@ -259,18 +316,19 @@ def value_company(symbol):
 
 def main():
     results = []
-    for symbol in TICKERS:
-        print(f"Pulling and valuing {symbol} ...")
-        try:
-            result = value_company(symbol)
-            results.append(result)
-            print(f"  {symbol}: DCF ${result['dcf_fair_value']} | "
-                  f"Street ${result['street_mean_target']} | "
-                  f"Blended ${result['blended_fair_value']} | "
-                  f"Price ${result['current_price']} -> {result['verdict']}")
-        except Exception as e:
-            print(f"  FAILED to value {symbol}: {e}")
-            traceback.print_exc()
+    for sector, cfg in SECTORS.items():
+        for symbol in cfg["tickers"]:
+            print(f"Pulling and valuing {symbol} ({sector}) ...")
+            try:
+                result = value_company(symbol, sector)
+                results.append(result)
+                print(f"  {symbol}: DCF ${result['dcf_fair_value']} | "
+                      f"Street ${result['street_mean_target']} | "
+                      f"Blended ${result['blended_fair_value']} | "
+                      f"Price ${result['current_price']} -> {result['verdict']}")
+            except Exception as e:
+                print(f"  FAILED to value {symbol}: {e}")
+                traceback.print_exc()
 
     with open("valuation_results.json", "w") as f:
         json.dump({"generated_at": datetime.now().isoformat(), "results": results}, f, indent=2)
@@ -281,24 +339,31 @@ def main():
 
 def build_dashboard(results):
     data_json = json.dumps(results)
+    sectors_json = json.dumps({name: cfg["note"] for name, cfg in SECTORS.items()})
     generated_at = datetime.now().strftime("%B %d, %Y %I:%M %p")
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Tech Valuation Dashboard</title>
+<title>Sector Valuation Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.32.0/plotly.min.js"></script>
 <style>
   body {{ font-family: -apple-system, Segoe UI, Roboto, sans-serif; background:#0f1117; color:#e8e8e8; margin:0; padding:24px; }}
   h1 {{ font-size: 20px; margin-bottom:4px; }}
   .subtitle {{ color:#9aa0a6; font-size:13px; margin-bottom:20px; }}
-  .tabs {{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }}
-  .tab-btn {{ background:#1b1e27; border:1px solid #2c303c; color:#cfd2da; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:14px; }}
-  .tab-btn.active {{ background:#2E86AB; color:white; border-color:#2E86AB; }}
-  .panel {{ display:none; }}
-  .panel.active {{ display:block; }}
+  .sector-tabs {{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }}
+  .sector-btn {{ background:#1b1e27; border:1px solid #2c303c; color:#cfd2da; padding:9px 18px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600; }}
+  .sector-btn.active {{ background:#2E86AB; color:white; border-color:#2E86AB; }}
+  .company-tabs {{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }}
+  .company-btn {{ background:#161922; border:1px solid #2c303c; color:#cfd2da; padding:6px 14px; border-radius:6px; cursor:pointer; font-size:13px; }}
+  .company-btn.active {{ background:#3ddc97; color:#0f1117; border-color:#3ddc97; }}
+  .sector-panel {{ display:none; }}
+  .sector-panel.active {{ display:block; }}
+  .company-panel {{ display:none; }}
+  .company-panel.active {{ display:block; }}
   .card {{ background:#161922; border:1px solid #2c303c; border-radius:12px; padding:20px; margin-bottom:16px; }}
+  .sector-note {{ font-size:13px; color:#9aa0a6; margin-bottom:16px; line-height:1.6; }}
   .stat-row {{ display:flex; gap:24px; flex-wrap:wrap; margin-top:12px; }}
   .stat {{ min-width:140px; }}
   .stat-label {{ font-size:12px; color:#9aa0a6; text-transform:uppercase; letter-spacing:0.5px;}}
@@ -314,115 +379,141 @@ def build_dashboard(results):
 </style>
 </head>
 <body>
-<h1>Tech Valuation Dashboard</h1>
+<h1>Sector Valuation Dashboard</h1>
 <div class="subtitle">Generated {generated_at} &middot; DCF assumptions anchored to Yahoo Finance consensus analyst estimates &middot; Not investment advice</div>
 
-<div class="tabs" id="tabs"></div>
-<div id="panels"></div>
+<div class="sector-tabs" id="sector-tabs"></div>
+<div id="sector-panels"></div>
 
 <script>
 const results = {data_json};
+const sectorNotes = {sectors_json};
 
-const tabsEl = document.getElementById('tabs');
-const panelsEl = document.getElementById('panels');
+// Group results by sector, preserving basket order
+const sectorOrder = Object.keys(sectorNotes);
+const bySector = {{}};
+sectorOrder.forEach(s => bySector[s] = []);
+results.forEach(r => {{ if (bySector[r.sector]) bySector[r.sector].push(r); }});
 
-// Summary tab button
-const summaryBtn = document.createElement('div');
-summaryBtn.className = 'tab-btn active';
-summaryBtn.textContent = 'Summary';
-summaryBtn.onclick = () => showPanel('summary');
-tabsEl.appendChild(summaryBtn);
-
-results.forEach(r => {{
-  const btn = document.createElement('div');
-  btn.className = 'tab-btn';
-  btn.textContent = r.symbol;
-  btn.onclick = () => showPanel(r.symbol);
-  tabsEl.appendChild(btn);
-}});
+const sectorTabsEl = document.getElementById('sector-tabs');
+const sectorPanelsEl = document.getElementById('sector-panels');
 
 function verdictClass(v) {{ return v === 'UNDERVALUED' ? 'verdict-under' : 'verdict-over'; }}
 
-// Build summary panel
-const summaryPanel = document.createElement('div');
-summaryPanel.className = 'panel active';
-summaryPanel.id = 'panel-summary';
-let rows = results.map(r => `
-  <tr>
-    <td><b>${{r.symbol}}</b> &middot; ${{r.company_name}} ${{r.data_warning ? '<span class="warning-badge">⚠ check data</span>' : ''}}</td>
-    <td>$${{r.current_price}}</td>
-    <td>$${{r.dcf_fair_value}}</td>
-    <td>${{r.street_mean_target ? '$' + r.street_mean_target : 'n/a'}}</td>
-    <td>$${{r.blended_fair_value}}</td>
-    <td class="${{verdictClass(r.verdict)}}">${{r.verdict}}</td>
-  </tr>`).join('');
-summaryPanel.innerHTML = `
-  <div class="card">
-    <table class="summary">
-      <tr><th>Company</th><th>Price</th><th>DCF Model</th><th>Street Mean Target</th><th>Blended Fair Value</th><th>Verdict</th></tr>
-      ${{rows}}
-    </table>
-  </div>
-  <div id="summary-chart" class="card" style="height:420px;"></div>
-`;
-panelsEl.appendChild(summaryPanel);
+sectorOrder.forEach((sector, idx) => {{
+  const items = bySector[sector];
 
-Plotly.newPlot('summary-chart', [
-  {{ x: results.map(r=>r.symbol), y: results.map(r=>r.current_price), name: 'Current Price', type: 'bar', marker: {{color:'#A23B72'}} }},
-  {{ x: results.map(r=>r.symbol), y: results.map(r=>r.dcf_fair_value), name: 'DCF Fair Value', type: 'bar', marker: {{color:'#2E86AB'}} }},
-  {{ x: results.map(r=>r.symbol), y: results.map(r=>r.blended_fair_value), name: 'Blended Fair Value', type: 'bar', marker: {{color:'#3ddc97'}} }},
-], {{
-  paper_bgcolor:'#161922', plot_bgcolor:'#161922', font:{{color:'#e8e8e8'}},
-  barmode:'group', margin:{{t:20}}, legend:{{orientation:'h', y:-0.15}}
-}}, {{displayModeBar:false, responsive:true}});
+  // Sector tab button
+  const sBtn = document.createElement('div');
+  sBtn.className = 'sector-btn' + (idx === 0 ? ' active' : '');
+  sBtn.textContent = sector;
+  sBtn.onclick = () => showSector(sector);
+  sectorTabsEl.appendChild(sBtn);
 
-// Build per-ticker panels
-results.forEach(r => {{
-  const panel = document.createElement('div');
-  panel.className = 'panel';
-  panel.id = 'panel-' + r.symbol;
-  const a = r.assumptions;
-  panel.innerHTML = `
+  // Sector panel
+  const sPanel = document.createElement('div');
+  sPanel.className = 'sector-panel' + (idx === 0 ? ' active' : '');
+  sPanel.id = 'sector-panel-' + sector;
+
+  const rows = items.map(r => `
+    <tr>
+      <td><b>${{r.symbol}}</b> &middot; ${{r.company_name}} ${{r.data_warning ? '<span class="warning-badge">⚠ check data</span>' : ''}}</td>
+      <td>$${{r.current_price}}</td>
+      <td>$${{r.dcf_fair_value}}</td>
+      <td>${{r.street_mean_target ? '$' + r.street_mean_target : 'n/a'}}</td>
+      <td>$${{r.blended_fair_value}}</td>
+      <td class="${{verdictClass(r.verdict)}}">${{r.verdict}}</td>
+    </tr>`).join('');
+
+  sPanel.innerHTML = `
+    <div class="sector-note">${{sectorNotes[sector]}}</div>
     <div class="card">
-      <div class="stat-row">
-        <div class="stat"><div class="stat-label">Current Price</div><div class="stat-value">$${{r.current_price}}</div></div>
-        <div class="stat"><div class="stat-label">DCF Fair Value</div><div class="stat-value">$${{r.dcf_fair_value}}</div></div>
-        <div class="stat"><div class="stat-label">Street Mean Target</div><div class="stat-value">${{r.street_mean_target ? '$'+r.street_mean_target : 'n/a'}}</div></div>
-        <div class="stat"><div class="stat-label">Blended Fair Value</div><div class="stat-value">$${{r.blended_fair_value}}</div></div>
-        <div class="stat"><div class="stat-label">Verdict</div><div class="stat-value ${{verdictClass(r.verdict)}}">${{r.verdict}}</div></div>
-      </div>
-      <div id="chart-${{r.symbol}}" style="height:360px; margin-top:20px;"></div>
-      ${{r.data_warning ? `<div class="warning-card">⚠ <b>Data quality note:</b> ${{r.data_warning}}</div>` : ''}}
-      <div class="assumptions">
-        <b>Model assumptions (consensus-anchored):</b><br>
-        Discount rate: ${{(a.discount_rate*100).toFixed(1)}}% (beta ${{a.beta}}) &middot;
-        Terminal growth: ${{(a.terminal_growth_rate*100).toFixed(1)}}% &middot;
-        FCF margin (weighted recent years): ${{(a.fcf_margin*100).toFixed(1)}}%<br>
-        5-yr revenue growth path: ${{a.growth_path.map(g => (g*100).toFixed(1)+'%').join(' \\u2192 ')}}<br>
-        Street target range: ${{r.street_low_target ? '$'+r.street_low_target : 'n/a'}} \\u2013 ${{r.street_high_target ? '$'+r.street_high_target : 'n/a'}} (median $${{r.street_median_target ?? 'n/a'}})
-      </div>
+      <table class="summary">
+        <tr><th>Company</th><th>Price</th><th>DCF Model</th><th>Street Mean Target</th><th>Blended Fair Value</th><th>Verdict</th></tr>
+        ${{rows}}
+      </table>
     </div>
+    <div id="chart-${{sector.replace(/\\s+/g,'-')}}" class="card" style="height:380px;"></div>
+    <div class="company-tabs" id="company-tabs-${{sector.replace(/\\s+/g,'-')}}"></div>
+    <div id="company-panels-${{sector.replace(/\\s+/g,'-')}}"></div>
   `;
-  panelsEl.appendChild(panel);
+  sectorPanelsEl.appendChild(sPanel);
 
-  Plotly.newPlot('chart-' + r.symbol, [{{
-    x: ['Current Price', 'DCF Model', 'Street Mean', 'Blended Fair Value'],
-    y: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value],
-    type: 'bar',
-    marker: {{color: ['#A23B72', '#2E86AB', '#f4a261', '#3ddc97']}},
-    text: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value].map(v => '$'+v.toFixed(2)),
-    textposition: 'outside',
-  }}], {{
+  // Sector summary chart
+  Plotly.newPlot('chart-' + sector.replace(/\\s+/g,'-'), [
+    {{ x: items.map(r=>r.symbol), y: items.map(r=>r.current_price), name: 'Current Price', type: 'bar', marker: {{color:'#A23B72'}} }},
+    {{ x: items.map(r=>r.symbol), y: items.map(r=>r.dcf_fair_value), name: 'DCF Fair Value', type: 'bar', marker: {{color:'#2E86AB'}} }},
+    {{ x: items.map(r=>r.symbol), y: items.map(r=>r.blended_fair_value), name: 'Blended Fair Value', type: 'bar', marker: {{color:'#3ddc97'}} }},
+  ], {{
     paper_bgcolor:'#161922', plot_bgcolor:'#161922', font:{{color:'#e8e8e8'}},
-    margin:{{t:20}}, title: {{text: r.symbol + ': ' + r.company_name, font:{{size:14}}}}
+    barmode:'group', margin:{{t:20}}, legend:{{orientation:'h', y:-0.2}}
   }}, {{displayModeBar:false, responsive:true}});
+
+  // Company sub-tabs within this sector
+  const cTabsEl = document.getElementById('company-tabs-' + sector.replace(/\\s+/g,'-'));
+  const cPanelsEl = document.getElementById('company-panels-' + sector.replace(/\\s+/g,'-'));
+
+  items.forEach((r, cIdx) => {{
+    const cBtn = document.createElement('div');
+    cBtn.className = 'company-btn' + (cIdx === 0 ? ' active' : '');
+    cBtn.textContent = r.symbol;
+    cBtn.onclick = () => showCompany(sector, r.symbol);
+    cTabsEl.appendChild(cBtn);
+
+    const cPanel = document.createElement('div');
+    cPanel.className = 'company-panel' + (cIdx === 0 ? ' active' : '');
+    cPanel.id = 'company-panel-' + sector.replace(/\\s+/g,'-') + '-' + r.symbol;
+    const a = r.assumptions;
+    cPanel.innerHTML = `
+      <div class="card">
+        <div class="stat-row">
+          <div class="stat"><div class="stat-label">Current Price</div><div class="stat-value">$${{r.current_price}}</div></div>
+          <div class="stat"><div class="stat-label">DCF Fair Value</div><div class="stat-value">$${{r.dcf_fair_value}}</div></div>
+          <div class="stat"><div class="stat-label">Street Mean Target</div><div class="stat-value">${{r.street_mean_target ? '$'+r.street_mean_target : 'n/a'}}</div></div>
+          <div class="stat"><div class="stat-label">Blended Fair Value</div><div class="stat-value">$${{r.blended_fair_value}}</div></div>
+          <div class="stat"><div class="stat-label">Verdict</div><div class="stat-value ${{verdictClass(r.verdict)}}">${{r.verdict}}</div></div>
+        </div>
+        <div id="companychart-${{sector.replace(/\\s+/g,'-')}}-${{r.symbol}}" style="height:340px; margin-top:20px;"></div>
+        ${{r.data_warning ? `<div class="warning-card">⚠ <b>Data quality note:</b> ${{r.data_warning}}</div>` : ''}}
+        <div class="assumptions">
+          <b>Model assumptions (consensus-anchored):</b><br>
+          Discount rate: ${{(a.discount_rate*100).toFixed(1)}}% (beta ${{a.beta}}) &middot;
+          Terminal growth: ${{(a.terminal_growth_rate*100).toFixed(1)}}% &middot;
+          FCF margin (weighted recent years): ${{(a.fcf_margin*100).toFixed(1)}}%<br>
+          5-yr revenue growth path: ${{a.growth_path.map(g => (g*100).toFixed(1)+'%').join(' \\u2192 ')}}<br>
+          Street target range: ${{r.street_low_target ? '$'+r.street_low_target : 'n/a'}} \\u2013 ${{r.street_high_target ? '$'+r.street_high_target : 'n/a'}} (median $${{r.street_median_target ?? 'n/a'}})
+        </div>
+      </div>
+    `;
+    cPanelsEl.appendChild(cPanel);
+
+    Plotly.newPlot('companychart-' + sector.replace(/\\s+/g,'-') + '-' + r.symbol, [{{
+      x: ['Current Price', 'DCF Model', 'Street Mean', 'Blended Fair Value'],
+      y: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value],
+      type: 'bar',
+      marker: {{color: ['#A23B72', '#2E86AB', '#f4a261', '#3ddc97']}},
+      text: [r.current_price, r.dcf_fair_value, r.street_mean_target || 0, r.blended_fair_value].map(v => '$'+v.toFixed(2)),
+      textposition: 'outside',
+    }}], {{
+      paper_bgcolor:'#161922', plot_bgcolor:'#161922', font:{{color:'#e8e8e8'}},
+      margin:{{t:20}}, title: {{text: r.symbol + ': ' + r.company_name, font:{{size:14}}}}
+    }}, {{displayModeBar:false, responsive:true}});
+  }});
 }});
 
-function showPanel(id) {{
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('panel-' + id).classList.add('active');
-  [...document.querySelectorAll('.tab-btn')].find(b => b.textContent === (id === 'summary' ? 'Summary' : id)).classList.add('active');
+function showSector(sector) {{
+  document.querySelectorAll('.sector-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sector-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sector-panel-' + sector).classList.add('active');
+  [...document.querySelectorAll('.sector-btn')].find(b => b.textContent === sector).classList.add('active');
+}}
+
+function showCompany(sector, symbol) {{
+  const key = sector.replace(/\\s+/g,'-');
+  document.querySelectorAll('#company-panels-' + key + ' .company-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#company-tabs-' + key + ' .company-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('company-panel-' + key + '-' + symbol).classList.add('active');
+  [...document.querySelectorAll('#company-tabs-' + key + ' .company-btn')].find(b => b.textContent === symbol).classList.add('active');
 }}
 </script>
 </body>
