@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-09-03T16:13:07.028560",
+  "generated_at": "2026-09-04T16:07:52.380446",
   "results": [
     {
       "symbol": "NVDA",
       "sector": "Semiconductors",
       "company_name": "NVIDIA Corporation",
-      "current_price": 227.63,
+      "current_price": 231.07,
       "shares_outstanding": 24147000000,
-      "market_cap": 5497064259584,
+      "market_cap": 5579647483904,
       "dcf_fair_value": 176.91,
       "street_mean_target": 325.99,
       "street_median_target": 315.0,
@@ -18,7 +18,7 @@
       "data_warning": null,
       "assumptions": {
         "discount_rate": 0.13,
-        "beta": 2.21,
+        "beta": 2.22,
         "terminal_growth_rate": 0.04,
         "fcf_margin": 0.4532,
         "growth_path": [
@@ -30,26 +30,26 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "TSM",
       "sector": "Semiconductors",
       "company_name": "Taiwan Semiconductor Manufactur",
-      "current_price": 412.68,
+      "current_price": 426.14,
       "shares_outstanding": 5186474013,
-      "market_cap": 2140224356352,
-      "dcf_fair_value": 234.04,
+      "market_cap": 2210164113408,
+      "dcf_fair_value": 236.75,
       "street_mean_target": 552.38,
       "street_median_target": 537.0,
       "street_low_target": 440.0,
       "street_high_target": 700.0,
-      "blended_fair_value": 393.21,
+      "blended_fair_value": 394.56,
       "verdict": "OVERVALUED",
-      "data_warning": "Financials were reported in TWD and converted to USD at ~0.0316 for this model.",
+      "data_warning": "Financials were reported in TWD and converted to USD at ~0.0317 for this model.",
       "assumptions": {
-        "discount_rate": 0.1059,
-        "beta": 1.26,
+        "discount_rate": 0.1053,
+        "beta": 1.25,
         "terminal_growth_rate": 0.04,
         "fcf_margin": 0.2515,
         "growth_path": [
@@ -61,26 +61,26 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "AVGO",
       "sector": "Semiconductors",
       "company_name": "Broadcom Inc.",
-      "current_price": 352.04,
+      "current_price": 356.23,
       "shares_outstanding": 4757580198,
-      "market_cap": 1674668277760,
-      "dcf_fair_value": 281.77,
+      "market_cap": 1694792941568,
+      "dcf_fair_value": 285.11,
       "street_mean_target": 525.97,
       "street_median_target": 527.5,
       "street_low_target": 215.88,
       "street_high_target": 675.0,
-      "blended_fair_value": 403.87,
+      "blended_fair_value": 405.54,
       "verdict": "UNDERVALUED",
       "data_warning": null,
       "assumptions": {
-        "discount_rate": 0.1167,
-        "beta": 1.47,
+        "discount_rate": 0.1159,
+        "beta": 1.46,
         "terminal_growth_rate": 0.04,
         "fcf_margin": 0.4182,
         "growth_path": [
@@ -92,23 +92,23 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "ASML",
       "sector": "Semiconductors",
       "company_name": "ASML Holding N.V. - New York Re",
-      "current_price": 1636.92,
+      "current_price": 1709.67,
       "shares_outstanding": 384100000,
-      "market_cap": 628740980736,
-      "dcf_fair_value": 881.1,
-      "street_mean_target": 2148.8,
-      "street_median_target": 2236.31,
-      "street_low_target": 899.69,
-      "street_high_target": 2867.98,
-      "blended_fair_value": 1514.95,
+      "market_cap": 656684285952,
+      "dcf_fair_value": 880.7,
+      "street_mean_target": 2147.8,
+      "street_median_target": 2235.27,
+      "street_low_target": 899.27,
+      "street_high_target": 2866.64,
+      "blended_fair_value": 1514.25,
       "verdict": "OVERVALUED",
-      "data_warning": "Financials were reported in EUR and converted to USD at ~1.1629 for this model.",
+      "data_warning": "Financials were reported in EUR and converted to USD at ~1.1624 for this model.",
       "assumptions": {
         "discount_rate": 0.1113,
         "beta": 1.36,
@@ -123,15 +123,15 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "AMD",
       "sector": "Semiconductors",
       "company_name": "Advanced Micro Devices, Inc.",
-      "current_price": 457.72,
+      "current_price": 471.86,
       "shares_outstanding": 1632475042,
-      "market_cap": 747214667776,
+      "market_cap": 770302935040,
       "dcf_fair_value": 117.0,
       "street_mean_target": 613.84,
       "street_median_target": 610.0,
@@ -154,15 +154,15 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "XOM",
       "sector": "Energy",
       "company_name": "ExxonMobil Holdings Corporation",
-      "current_price": 163.66,
+      "current_price": 160.41,
       "shares_outstanding": 4111911960,
-      "market_cap": 672955498496,
+      "market_cap": 659571212288,
       "dcf_fair_value": 83.03,
       "street_mean_target": 169.68,
       "street_median_target": 170.0,
@@ -185,15 +185,15 @@
         ],
         "consensus_5y_growth_estimate": -0.0183
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "CVX",
       "sector": "Energy",
       "company_name": "Chevron Corporation",
-      "current_price": 212.35,
+      "current_price": 209.21,
       "shares_outstanding": 1961603274,
-      "market_cap": 416556253184,
+      "market_cap": 410387054592,
       "dcf_fair_value": 54.09,
       "street_mean_target": 218.29,
       "street_median_target": 222.0,
@@ -216,16 +216,16 @@
         ],
         "consensus_5y_growth_estimate": -0.0689
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "SHEL",
       "sector": "Energy",
       "company_name": "Shell PLC",
-      "current_price": 92.88,
-      "shares_outstanding": 2750035538,
-      "market_cap": 255423283200,
-      "dcf_fair_value": 54.42,
+      "current_price": 93.53,
+      "shares_outstanding": 2750738667,
+      "market_cap": 257276592128,
+      "dcf_fair_value": 54.41,
       "street_mean_target": 97.77,
       "street_median_target": 98.0,
       "street_low_target": 81.6,
@@ -247,15 +247,15 @@
         ],
         "consensus_5y_growth_estimate": -0.1033
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "BP",
       "sector": "Energy",
       "company_name": "BP p.l.c.",
-      "current_price": 43.82,
-      "shares_outstanding": 2575342288,
-      "market_cap": 112851501056,
+      "current_price": 43.93,
+      "shares_outstanding": 2575404456,
+      "market_cap": 113137524736,
       "dcf_fair_value": 19.26,
       "street_mean_target": 47.63,
       "street_median_target": 47.0,
@@ -266,7 +266,7 @@
       "data_warning": null,
       "assumptions": {
         "discount_rate": 0.07,
-        "beta": -0.21,
+        "beta": -0.22,
         "terminal_growth_rate": -0.0974,
         "fcf_margin": 0.065,
         "growth_path": [
@@ -278,15 +278,15 @@
         ],
         "consensus_5y_growth_estimate": -0.0974
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "COP",
       "sector": "Energy",
       "company_name": "ConocoPhillips",
-      "current_price": 136.44,
+      "current_price": 134.66,
       "shares_outstanding": 1201337479,
-      "market_cap": 163910483968,
+      "market_cap": 161778106368,
       "dcf_fair_value": 39.96,
       "street_mean_target": 145.33,
       "street_median_target": 146.0,
@@ -309,25 +309,25 @@
         ],
         "consensus_5y_growth_estimate": -0.0756
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "EQT",
       "sector": "Natural Gas",
       "company_name": "EQT Corporation",
-      "current_price": 55.99,
+      "current_price": 54.92,
       "shares_outstanding": 625516000,
-      "market_cap": 35022393344,
-      "dcf_fair_value": 27.99,
+      "market_cap": 34353338368,
+      "dcf_fair_value": 28.04,
       "street_mean_target": 67.44,
       "street_median_target": 67.0,
       "street_low_target": 52.0,
       "street_high_target": 81.0,
-      "blended_fair_value": 47.72,
+      "blended_fair_value": 47.74,
       "verdict": "OVERVALUED",
       "data_warning": null,
       "assumptions": {
-        "discount_rate": 0.0719,
+        "discount_rate": 0.0718,
         "beta": 0.58,
         "terminal_growth_rate": -0.0165,
         "fcf_margin": 0.2446,
@@ -340,15 +340,15 @@
         ],
         "consensus_5y_growth_estimate": -0.0165
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "WMB",
       "sector": "Natural Gas",
       "company_name": "Williams Companies, Inc. (The)",
-      "current_price": 74.83,
+      "current_price": 73.8,
       "shares_outstanding": 1223167472,
-      "market_cap": 91523506176,
+      "market_cap": 90269761536,
       "dcf_fair_value": 36.04,
       "street_mean_target": 85.37,
       "street_median_target": 86.0,
@@ -371,25 +371,25 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "KMI",
       "sector": "Natural Gas",
       "company_name": "Kinder Morgan, Inc.",
-      "current_price": 31.92,
-      "shares_outstanding": 2224825757,
-      "market_cap": 71016660992,
-      "dcf_fair_value": 20.76,
+      "current_price": 31.43,
+      "shares_outstanding": 2226802089,
+      "market_cap": 69988392960,
+      "dcf_fair_value": 20.85,
       "street_mean_target": 35.95,
       "street_median_target": 36.0,
       "street_low_target": 31.0,
       "street_high_target": 43.0,
-      "blended_fair_value": 28.35,
+      "blended_fair_value": 28.4,
       "verdict": "OVERVALUED",
       "data_warning": null,
       "assumptions": {
-        "discount_rate": 0.0707,
+        "discount_rate": 0.0706,
         "beta": 0.55,
         "terminal_growth_rate": 0.0243,
         "fcf_margin": 0.1971,
@@ -402,15 +402,15 @@
         ],
         "consensus_5y_growth_estimate": 0.0243
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "LNG",
       "sector": "Natural Gas",
       "company_name": "Cheniere Energy, Inc.",
-      "current_price": 292.67,
+      "current_price": 290.63,
       "shares_outstanding": 206534158,
-      "market_cap": 60446355456,
+      "market_cap": 60025024512,
       "dcf_fair_value": 363.73,
       "street_mean_target": 308.9,
       "street_median_target": 310.0,
@@ -433,16 +433,16 @@
         ],
         "consensus_5y_growth_estimate": 0.0288
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "OKE",
       "sector": "Natural Gas",
       "company_name": "ONEOK, Inc.",
-      "current_price": 96.36,
-      "shares_outstanding": 630032852,
-      "market_cap": 60713111552,
-      "dcf_fair_value": 9.39,
+      "current_price": 95.08,
+      "shares_outstanding": 630369667,
+      "market_cap": 59938697216,
+      "dcf_fair_value": 9.38,
       "street_mean_target": 99.37,
       "street_median_target": 98.0,
       "street_low_target": 89.0,
@@ -464,15 +464,15 @@
         ],
         "consensus_5y_growth_estimate": -0.0384
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "LMT",
       "sector": "Defense & Military",
       "company_name": "Lockheed Martin Corporation",
-      "current_price": 529.32,
+      "current_price": 527.38,
       "shares_outstanding": 230790753,
-      "market_cap": 122162159616,
+      "market_cap": 121713270784,
       "dcf_fair_value": 987.08,
       "street_mean_target": 632.95,
       "street_median_target": 620.0,
@@ -483,7 +483,7 @@
       "data_warning": null,
       "assumptions": {
         "discount_rate": 0.07,
-        "beta": 0.11,
+        "beta": 0.1,
         "terminal_growth_rate": 0.04,
         "fcf_margin": 0.0862,
         "growth_path": [
@@ -495,15 +495,15 @@
         ],
         "consensus_5y_growth_estimate": 0.055
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "RTX",
       "sector": "Defense & Military",
       "company_name": "RTX Corporation",
-      "current_price": 200.47,
+      "current_price": 200.43,
       "shares_outstanding": 1347758144,
-      "market_cap": 270185070592,
+      "market_cap": 270131134464,
       "dcf_fair_value": 162.36,
       "street_mean_target": 234.82,
       "street_median_target": 240.0,
@@ -526,15 +526,15 @@
         ],
         "consensus_5y_growth_estimate": 0.0731
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "NOC",
       "sector": "Defense & Military",
       "company_name": "Northrop Grumman Corporation",
-      "current_price": 525.74,
+      "current_price": 519.19,
       "shares_outstanding": 142063026,
-      "market_cap": 74688208896,
+      "market_cap": 73757704192,
       "dcf_fair_value": 703.39,
       "street_mean_target": 647.14,
       "street_median_target": 640.0,
@@ -557,15 +557,15 @@
         ],
         "consensus_5y_growth_estimate": 0.0671
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "GD",
       "sector": "Defense & Military",
       "company_name": "General Dynamics Corporation",
-      "current_price": 361.9,
+      "current_price": 359.67,
       "shares_outstanding": 270557195,
-      "market_cap": 97914642432,
+      "market_cap": 97311006720,
       "dcf_fair_value": 501.72,
       "street_mean_target": 420.02,
       "street_median_target": 430.0,
@@ -588,15 +588,15 @@
         ],
         "consensus_5y_growth_estimate": 0.0467
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "LHX",
       "sector": "Defense & Military",
       "company_name": "L3Harris Technologies, Inc.",
-      "current_price": 259.36,
+      "current_price": 257.37,
       "shares_outstanding": 186214616,
-      "market_cap": 48296624128,
+      "market_cap": 47925125120,
       "dcf_fair_value": 323.36,
       "street_mean_target": 344.54,
       "street_median_target": 350.0,
@@ -619,15 +619,15 @@
         ],
         "consensus_5y_growth_estimate": 0.0673
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "AAPL",
       "sector": "Blue Chips",
       "company_name": "Apple Inc.",
-      "current_price": 329.64,
+      "current_price": 320.82,
       "shares_outstanding": 14594180000,
-      "market_cap": 4810315137024,
+      "market_cap": 4682105225216,
       "dcf_fair_value": 172.92,
       "street_mean_target": 324.53,
       "street_median_target": 335.0,
@@ -650,15 +650,15 @@
         ],
         "consensus_5y_growth_estimate": 0.0996
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "MSFT",
       "sector": "Blue Chips",
       "company_name": "Microsoft Corporation",
-      "current_price": 513.15,
+      "current_price": 500.77,
       "shares_outstanding": 7425545491,
-      "market_cap": 3810419015680,
+      "market_cap": 3718479347712,
       "dcf_fair_value": 300.76,
       "street_mean_target": 571.38,
       "street_median_target": 555.0,
@@ -681,15 +681,15 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "JPM",
       "sector": "Blue Chips",
       "company_name": "JP Morgan Chase & Co.",
-      "current_price": 360.95,
+      "current_price": 357.78,
       "shares_outstanding": 2658186195,
-      "market_cap": 959472336896,
+      "market_cap": 951045849088,
       "dcf_fair_value": null,
       "street_mean_target": 374.57,
       "street_median_target": 372.0,
@@ -699,21 +699,21 @@
       "verdict": "N/A \u2014 bank/financial (FCF-based DCF not applicable)",
       "data_warning": "This is a bank or diversified financial company. Free cash flow is not a meaningful valuation metric for depository/financial institutions, since operating cash flow is dominated by deposits, loans, and trading positions rather than true cash generation. DCF fair value is intentionally omitted; only the Street consensus target is shown. Consider a price-to-book or dividend discount approach for this name instead.",
       "assumptions": null,
-      "as_of": "2026-09-03 16:12"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "PG",
       "sector": "Blue Chips",
       "company_name": "Procter & Gamble Company (The)",
-      "current_price": 147.41,
-      "shares_outstanding": 2324433060,
-      "market_cap": 342644686848,
-      "dcf_fair_value": 157.47,
+      "current_price": 146.78,
+      "shares_outstanding": 2322672312,
+      "market_cap": 340910211072,
+      "dcf_fair_value": 157.59,
       "street_mean_target": 160.61,
       "street_median_target": 162.0,
       "street_low_target": 143.0,
       "street_high_target": 186.0,
-      "blended_fair_value": 159.04,
+      "blended_fair_value": 159.1,
       "verdict": "UNDERVALUED",
       "data_warning": null,
       "assumptions": {
@@ -730,15 +730,15 @@
         ],
         "consensus_5y_growth_estimate": 0.0302
       },
-      "as_of": "2026-09-03 16:13"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "KO",
       "sector": "Blue Chips",
       "company_name": "Coca-Cola Company (The)",
-      "current_price": 88.72,
+      "current_price": 88.27,
       "shares_outstanding": 4302549243,
-      "market_cap": 381722165248,
+      "market_cap": 379785969664,
       "dcf_fair_value": 12.86,
       "street_mean_target": 94.7,
       "street_median_target": 96.0,
@@ -761,15 +761,15 @@
         ],
         "consensus_5y_growth_estimate": 0.0019
       },
-      "as_of": "2026-09-03 16:13"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "JNJ",
       "sector": "Major Pharma",
       "company_name": "Johnson & Johnson",
-      "current_price": 277.76,
+      "current_price": 276.31,
       "shares_outstanding": 2409898597,
-      "market_cap": 669373431808,
+      "market_cap": 665891110912,
       "dcf_fair_value": 314.91,
       "street_mean_target": 275.64,
       "street_median_target": 281.0,
@@ -792,15 +792,15 @@
         ],
         "consensus_5y_growth_estimate": 0.0763
       },
-      "as_of": "2026-09-03 16:13"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "PFE",
       "sector": "Major Pharma",
       "company_name": "Pfizer, Inc.",
-      "current_price": 28.66,
+      "current_price": 28.64,
       "shares_outstanding": 5699673589,
-      "market_cap": 163381149696,
+      "market_cap": 163210149888,
       "dcf_fair_value": 2.8,
       "street_mean_target": 28.61,
       "street_median_target": 28.0,
@@ -823,15 +823,15 @@
         ],
         "consensus_5y_growth_estimate": -0.0386
       },
-      "as_of": "2026-09-03 16:13"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "MRK",
       "sector": "Major Pharma",
       "company_name": "Merck & Company, Inc.",
-      "current_price": 151.02,
+      "current_price": 150.72,
       "shares_outstanding": 2467171638,
-      "market_cap": 372592246784,
+      "market_cap": 371839762432,
       "dcf_fair_value": 185.39,
       "street_mean_target": 148.73,
       "street_median_target": 150.0,
@@ -854,15 +854,15 @@
         ],
         "consensus_5y_growth_estimate": 0.0471
       },
-      "as_of": "2026-09-03 16:13"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "ABBV",
       "sector": "Major Pharma",
       "company_name": "AbbVie Inc.",
-      "current_price": 260.79,
+      "current_price": 256.68,
       "shares_outstanding": 1767117285,
-      "market_cap": 460846530560,
+      "market_cap": 453574819840,
       "dcf_fair_value": 445.71,
       "street_mean_target": 276.59,
       "street_median_target": 280.0,
@@ -885,26 +885,26 @@
         ],
         "consensus_5y_growth_estimate": 0.0878
       },
-      "as_of": "2026-09-03 16:13"
+      "as_of": "2026-09-04 16:07"
     },
     {
       "symbol": "LLY",
       "sector": "Major Pharma",
       "company_name": "Eli Lilly and Company",
-      "current_price": 1153.78,
-      "shares_outstanding": 891357065,
-      "market_cap": 1028425515008,
-      "dcf_fair_value": 109.72,
+      "current_price": 1145.49,
+      "shares_outstanding": 891741406,
+      "market_cap": 1021480796160,
+      "dcf_fair_value": 109.68,
       "street_mean_target": 1315.04,
       "street_median_target": 1376.0,
       "street_low_target": 850.0,
       "street_high_target": 1600.0,
-      "blended_fair_value": 712.38,
+      "blended_fair_value": 712.36,
       "verdict": "OVERVALUED",
       "data_warning": "1 of the last 3 years had negative FCF margin; recent years were weighted more heavily to reduce distortion, but treat this DCF with extra caution.",
       "assumptions": {
         "discount_rate": 0.07,
-        "beta": 0.51,
+        "beta": 0.5,
         "terminal_growth_rate": 0.04,
         "fcf_margin": 0.0334,
         "growth_path": [
@@ -916,7 +916,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-09-03 16:13"
+      "as_of": "2026-09-04 16:07"
     }
   ]
 }
