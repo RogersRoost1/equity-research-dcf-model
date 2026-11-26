@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T21:28:56.990799",
+  "generated_at": "2026-11-26T21:16:02.080201",
   "results": [
     {
       "symbol": "NVDA",
@@ -33,7 +33,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "TSM",
@@ -42,15 +42,15 @@
       "current_price": 342.34,
       "shares_outstanding": 5186472994,
       "market_cap": 1775537094656,
-      "dcf_fair_value": 246.1,
-      "dcf_upside": -28.11,
+      "dcf_fair_value": 247.78,
+      "dcf_upside": -27.62,
       "street_mean_target": 586.69,
       "street_upside": 71.38,
       "street_median_target": 560.0,
       "street_low_target": 440.0,
       "street_high_target": 1000.0,
-      "blended_fair_value": 416.39,
-      "blended_upside": 21.63,
+      "blended_fair_value": 417.24,
+      "blended_upside": 21.88,
       "verdict": "UNDERVALUED",
       "data_warning": null,
       "assumptions": {
@@ -67,7 +67,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "AVGO",
@@ -101,7 +101,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "ASML",
@@ -110,15 +110,15 @@
       "current_price": 1303.08,
       "shares_outstanding": 385417742,
       "market_cap": 502230122496,
-      "dcf_fair_value": 904.23,
-      "dcf_upside": -30.61,
-      "street_mean_target": 2112.64,
-      "street_upside": 62.13,
-      "street_median_target": 2255.06,
-      "street_low_target": 849.31,
-      "street_high_target": 2866.47,
-      "blended_fair_value": 1508.44,
-      "blended_upside": 15.76,
+      "dcf_fair_value": 910.84,
+      "dcf_upside": -30.1,
+      "street_mean_target": 2111.49,
+      "street_upside": 62.04,
+      "street_median_target": 2253.82,
+      "street_low_target": 848.85,
+      "street_high_target": 2864.9,
+      "blended_fair_value": 1511.16,
+      "blended_upside": 15.97,
       "verdict": "UNDERVALUED",
       "data_warning": null,
       "assumptions": {
@@ -128,14 +128,14 @@
         "fcf_margin": 0.2955,
         "growth_path": [
           0.362,
-          0.2899,
-          0.2266,
-          0.1633,
+          0.2953,
+          0.2302,
+          0.1651,
           0.1
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "AMD",
@@ -169,7 +169,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "XOM",
@@ -203,7 +203,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0004
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "CVX",
@@ -237,24 +237,24 @@
         ],
         "consensus_5y_growth_estimate": -0.0436
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "SHEL",
       "sector": "Energy",
       "company_name": "Shell PLC",
       "current_price": 94.13,
-      "shares_outstanding": 2819410255,
-      "market_cap": 265391079424,
-      "dcf_fair_value": 72.09,
-      "dcf_upside": -23.42,
+      "shares_outstanding": 2818345805,
+      "market_cap": 265290874880,
+      "dcf_fair_value": 72.11,
+      "dcf_upside": -23.39,
       "street_mean_target": 110.81,
       "street_upside": 17.72,
       "street_median_target": 107.0,
       "street_low_target": 100.0,
       "street_high_target": 129.0,
-      "blended_fair_value": 91.45,
-      "blended_upside": -2.85,
+      "blended_fair_value": 91.46,
+      "blended_upside": -2.84,
       "verdict": "OVERVALUED",
       "data_warning": null,
       "assumptions": {
@@ -271,7 +271,7 @@
         ],
         "consensus_5y_growth_estimate": -0.078
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "BP",
@@ -280,32 +280,32 @@
       "current_price": 43.0,
       "shares_outstanding": 2575652107,
       "market_cap": 110753038336,
-      "dcf_fair_value": 25.04,
-      "dcf_upside": -41.76,
-      "street_mean_target": 55.31,
-      "street_upside": 28.64,
+      "dcf_fair_value": 25.49,
+      "dcf_upside": -40.72,
+      "street_mean_target": 55.27,
+      "street_upside": 28.54,
       "street_median_target": 55.0,
       "street_low_target": 43.0,
       "street_high_target": 72.95,
-      "blended_fair_value": 40.18,
-      "blended_upside": -6.56,
+      "blended_fair_value": 40.38,
+      "blended_upside": -6.09,
       "verdict": "OVERVALUED",
       "data_warning": null,
       "assumptions": {
         "discount_rate": 0.07,
         "beta": -0.26,
-        "terminal_growth_rate": -0.0832,
+        "terminal_growth_rate": -0.081,
         "fcf_margin": 0.065,
         "growth_path": [
-          0.2509,
-          -0.0832,
-          -0.0832,
-          -0.0832,
-          -0.0832
+          0.2471,
+          -0.081,
+          -0.081,
+          -0.081,
+          -0.081
         ],
-        "consensus_5y_growth_estimate": -0.0832
+        "consensus_5y_growth_estimate": -0.081
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "COP",
@@ -339,7 +339,7 @@
         ],
         "consensus_5y_growth_estimate": -0.0415
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "EQT",
@@ -373,7 +373,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "WMB",
@@ -382,15 +382,15 @@
       "current_price": 66.45,
       "shares_outstanding": 1250202516,
       "market_cap": 83075948544,
-      "dcf_fair_value": 40.82,
-      "dcf_upside": -38.56,
+      "dcf_fair_value": 40.53,
+      "dcf_upside": -39.01,
       "street_mean_target": 85.42,
       "street_upside": 28.54,
       "street_median_target": 85.0,
       "street_low_target": 69.0,
       "street_high_target": 103.0,
-      "blended_fair_value": 63.12,
-      "blended_upside": -5.01,
+      "blended_fair_value": 62.97,
+      "blended_upside": -5.23,
       "verdict": "OVERVALUED",
       "data_warning": null,
       "assumptions": {
@@ -399,15 +399,15 @@
         "terminal_growth_rate": 0.04,
         "fcf_margin": 0.162,
         "growth_path": [
-          0.0464,
-          0.1594,
-          0.1396,
-          0.1198,
+          0.047,
+          0.1563,
+          0.1375,
+          0.1188,
           0.1
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "KMI",
@@ -441,7 +441,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0091
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "LNG",
@@ -475,7 +475,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0014
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "OKE",
@@ -509,7 +509,7 @@
         ],
         "consensus_5y_growth_estimate": -0.0367
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "LMT",
@@ -543,7 +543,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0719
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "RTX",
@@ -577,7 +577,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0787
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "NOC",
@@ -611,7 +611,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0647
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "GD",
@@ -645,7 +645,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0534
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "LHX",
@@ -679,7 +679,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0686
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "AAPL",
@@ -713,7 +713,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0812
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "JPM",
@@ -734,7 +734,7 @@
       "verdict": "N/A \u2014 financial (Street only)",
       "data_warning": null,
       "assumptions": null,
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "PG",
@@ -768,7 +768,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0323
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "KO",
@@ -802,24 +802,24 @@
         ],
         "consensus_5y_growth_estimate": -0.0296
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "WMT",
       "sector": "Blue Chips",
       "company_name": "Walmart Inc.",
       "current_price": 131.94,
-      "shares_outstanding": 7933746241,
-      "market_cap": 1046778478592,
-      "dcf_fair_value": 59.03,
-      "dcf_upside": -55.26,
-      "street_mean_target": 136.15,
-      "street_upside": 3.19,
+      "shares_outstanding": 7958079155,
+      "market_cap": 1049988956160,
+      "dcf_fair_value": 58.83,
+      "dcf_upside": -55.41,
+      "street_mean_target": 136.8,
+      "street_upside": 3.69,
       "street_median_target": 140.0,
       "street_low_target": 81.0,
       "street_high_target": 155.0,
-      "blended_fair_value": 97.59,
-      "blended_upside": -26.04,
+      "blended_fair_value": 97.82,
+      "blended_upside": -25.86,
       "verdict": "OVERVALUED",
       "data_warning": null,
       "assumptions": {
@@ -828,15 +828,15 @@
         "terminal_growth_rate": 0.04,
         "fcf_margin": 0.0205,
         "growth_path": [
-          0.0673,
-          0.0418,
-          0.0418,
-          0.0418,
-          0.0418
+          0.0674,
+          0.0417,
+          0.0417,
+          0.0417,
+          0.0417
         ],
-        "consensus_5y_growth_estimate": 0.0418
+        "consensus_5y_growth_estimate": 0.0417
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "LLY",
@@ -870,7 +870,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "JNJ",
@@ -904,7 +904,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0635
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "ABBV",
@@ -938,7 +938,7 @@
         ],
         "consensus_5y_growth_estimate": 0.0919
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "MRK",
@@ -947,32 +947,32 @@
       "current_price": 140.29,
       "shares_outstanding": 2465245688,
       "market_cap": 345849298944,
-      "dcf_fair_value": 142.68,
-      "dcf_upside": 1.71,
+      "dcf_fair_value": 141.83,
+      "dcf_upside": 1.1,
       "street_mean_target": 161.53,
       "street_upside": 15.14,
       "street_median_target": 165.0,
       "street_low_target": 105.0,
       "street_high_target": 186.0,
-      "blended_fair_value": 152.1,
-      "blended_upside": 8.42,
+      "blended_fair_value": 151.68,
+      "blended_upside": 8.12,
       "verdict": "UNDERVALUED",
       "data_warning": null,
       "assumptions": {
         "discount_rate": 0.07,
         "beta": 0.12,
-        "terminal_growth_rate": 0.0327,
+        "terminal_growth_rate": 0.0325,
         "fcf_margin": 0.2144,
         "growth_path": [
-          0.0343,
-          0.0327,
-          0.0327,
-          0.0327,
-          0.0327
+          0.0342,
+          0.0325,
+          0.0325,
+          0.0325,
+          0.0325
         ],
-        "consensus_5y_growth_estimate": 0.0327
+        "consensus_5y_growth_estimate": 0.0325
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "PFE",
@@ -1006,7 +1006,7 @@
         ],
         "consensus_5y_growth_estimate": -0.0365
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "BRK-B",
@@ -1027,7 +1027,7 @@
       "verdict": "N/A \u2014 financial (Street only)",
       "data_warning": null,
       "assumptions": null,
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "PGR",
@@ -1048,7 +1048,7 @@
       "verdict": "N/A \u2014 financial (Street only)",
       "data_warning": null,
       "assumptions": null,
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "CB",
@@ -1069,7 +1069,7 @@
       "verdict": "N/A \u2014 financial (Street only)",
       "data_warning": null,
       "assumptions": null,
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "TRV",
@@ -1090,7 +1090,7 @@
       "verdict": "N/A \u2014 financial (Street only)",
       "data_warning": null,
       "assumptions": null,
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "ALL",
@@ -1111,7 +1111,7 @@
       "verdict": "N/A \u2014 financial (Street only)",
       "data_warning": null,
       "assumptions": null,
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "META",
@@ -1145,7 +1145,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "MSFT",
@@ -1179,7 +1179,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "GOOGL",
@@ -1213,7 +1213,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "TSLA",
@@ -1247,7 +1247,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:15"
     },
     {
       "symbol": "NFLX",
@@ -1281,7 +1281,7 @@
         ],
         "consensus_5y_growth_estimate": 0.1
       },
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:16"
     },
     {
       "symbol": "GS",
@@ -1302,7 +1302,7 @@
       "verdict": "N/A \u2014 financial (Street only)",
       "data_warning": null,
       "assumptions": null,
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:16"
     },
     {
       "symbol": "BAC",
@@ -1323,7 +1323,7 @@
       "verdict": "N/A \u2014 financial (Street only)",
       "data_warning": null,
       "assumptions": null,
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:16"
     },
     {
       "symbol": "WFC",
@@ -1344,7 +1344,7 @@
       "verdict": "N/A \u2014 financial (Street only)",
       "data_warning": null,
       "assumptions": null,
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:16"
     },
     {
       "symbol": "MS",
@@ -1365,7 +1365,7 @@
       "verdict": "N/A \u2014 financial (Street only)",
       "data_warning": null,
       "assumptions": null,
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:16"
     },
     {
       "symbol": "LPLA",
@@ -1386,7 +1386,7 @@
       "verdict": "N/A \u2014 financial (Street only)",
       "data_warning": null,
       "assumptions": null,
-      "as_of": "2026-11-25 21:28"
+      "as_of": "2026-11-26 21:16"
     }
   ]
 }
